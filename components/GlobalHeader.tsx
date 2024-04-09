@@ -6,9 +6,11 @@ type HeaderText = {
 
 const GlobalHeader = (props: HeaderText) => {
     return(
+        
         <View style={headerStyling.Header}>
             <Text style={headerStyling.HeaderText}>{props.text}</Text>
         </View>
+        
     )
 }
 

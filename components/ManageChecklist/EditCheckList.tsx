@@ -3,19 +3,8 @@ import { Text, View, StyleSheet, ScrollView, TouchableOpacity } from "react-nati
 import GlobalHeader from "../GlobalHeader";
 import { useIsFocused } from "@react-navigation/native";
 import * as SQLite from 'expo-sqlite';
-//import Navigation from '../../config/navigation';
-import EditOrDelete from './EditOrDeleteList';
-
-
-const Stack = createNativeStackNavigator();
-{/* 
-type RootStackParamList = {
-    EditOrDeleteList: { tableName: string };
-    // Other screens in the stack
-};
-
-type NavigationProps = NativeStackNavigationProp<RootStackParamList>;
-*/}
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import EditOrDeleteList from "./EditOrDeleteList";
 
 class TableNameClass {
     public name: string;
@@ -24,12 +13,31 @@ class TableNameClass {
         this.name = name;
     }
 }
+const Stack = createNativeStackNavigator();
 
-{/* 
-const EditCheckList = ( {navigation}: {navigation: NavigationProps }) => {
-*/}
+function MyStack() {
+    return (
+        <Stack.Navigator>
+            <Stack.Screen 
+                name="Home" 
+                component={EditCheckList}
+                options={{header: () => null}}
+            />
+            <Stack.Screen 
+                name="Edit" 
+                component={EditOrDeleteList}
+                options={{
+                    headerStyle: {
+                        backgroundColor: '#336DDD'
+                    },
+                    headerTintColor: '#FFFFFF'
+                }}
+            />
+        </Stack.Navigator>
+    )
+}
 
-const EditCheckList = () => {
+const EditCheckList = ({navigation}:any) => {
     const [isLoading, setIsLoading] = useState(true);
     const [names, setNames] = useState<TableNameClass[]>([]);
     const isFocused = useIsFocused();
@@ -90,16 +98,10 @@ const EditCheckList = () => {
                 <ScrollView style={style.ScrollView}>
                     {names.map((name) => (
                         <View key={name.name} style={style.Row}>
-                            {/* 
-                            <TouchableOpacity onPress={() => {navigation.push('EditOrDeleteList', { tableName: name.name })}}>
+                             
+                            <TouchableOpacity onPress={() => {navigation.navigate('Edit', { tableName: name.name })}}>
                                 <Text style={style.ActiveText}>{name.name}</Text>
                             </TouchableOpacity>
-                            */}
-                            <NavigationContainer>
-                                <Stack.Navigator>
-                                    <Stack.Screen name={name.name} component<{EditOrDelete} />
-                                </Stack.Navigator>
-                            </NavigationContainer>
                         </View>
                     ))}
                 </ScrollView>
@@ -137,4 +139,4 @@ const style = StyleSheet.create({
     }
 })
 
-export default EditCheckList;
+export default MyStack;

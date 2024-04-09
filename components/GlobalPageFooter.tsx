@@ -30,6 +30,10 @@ const FooterMenu = () => {
                 tabBarActiveTintColor: 'tomato',
                 tabBarInactiveTintColor: 'gray',
                 headerShown: false,
+                headerStyle: {
+                  backgroundColor: '#336DDD'
+                },
+                headerTintColor: '#FFFFFF'
               })}
             >
             <Tab.Screen 
@@ -46,6 +50,7 @@ const FooterMenu = () => {
     );
 }
 
+{/* 
 const StackMenu = () => {
   return (
     <Stack.Navigator>
@@ -54,13 +59,20 @@ const StackMenu = () => {
         component={EditCheckList} />
     </Stack.Navigator>
   ) 
+  
 }
-
+*/}
+{/* 
+export default () => {
+    <FooterMenu />
+    <StackMenu />
+}
+*/}
+{/* 
 export default () => {
   <NavigationContainer>
     <FooterMenu />
-    <StackMenu />
   </NavigationContainer>
 }
-
-//export default FooterMenu;
+*/}
+export default FooterMenu;
