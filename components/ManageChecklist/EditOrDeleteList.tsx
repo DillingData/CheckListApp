@@ -2,15 +2,6 @@ import React from "react";
 import { Text, View, StyleSheet, ScrollView } from "react-native";
 import GlobalHeader from "../GlobalHeader";
 
-/*
-type Table = {
-    tableName: string;
-}
-*/
-
-{/* 
-const EditOrDeleteList = (props: Table) => {
-*/}
 const EditOrDeleteList = ({route, navigation}:any) => {
     
     const { Table } = route.params;
