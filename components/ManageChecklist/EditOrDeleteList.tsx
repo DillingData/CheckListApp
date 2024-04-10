@@ -1,6 +1,10 @@
 import React from "react";
 import { Text, View, StyleSheet, ScrollView } from "react-native";
-import GlobalHeader from "../GlobalHeader";
+
+class CheckList {
+    public id: number | undefined;
+    public task: string | undefined;
+}
 
 const EditOrDeleteList = ({route, navigation}:any) => {
     
@@ -8,9 +12,6 @@ const EditOrDeleteList = ({route, navigation}:any) => {
 
     return (
         <View>
-            {/* 
-            <GlobalHeader text="Edit or Delete a checklist" />
-            */}
             <Text>Table name you clicked: {JSON.stringify(Table)}</Text>
         </View>
     )
