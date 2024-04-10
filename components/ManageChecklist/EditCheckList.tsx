@@ -99,7 +99,7 @@ const EditCheckList = ({navigation}:any) => {
                     {names.map((name) => (
                         <View key={name.name} style={style.Row}>
                              
-                            <TouchableOpacity onPress={() => {navigation.navigate('Edit', { tableName: name.name })}}>
+                            <TouchableOpacity onPress={() => {navigation.navigate('Edit', { Table: name.name })}}>
                                 <Text style={style.ActiveText}>{name.name}</Text>
                             </TouchableOpacity>
                         </View>

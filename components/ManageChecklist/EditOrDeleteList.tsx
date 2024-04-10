@@ -1,22 +1,26 @@
 import React from "react";
 import { Text, View, StyleSheet, ScrollView } from "react-native";
 import GlobalHeader from "../GlobalHeader";
- 
+
+/*
 type Table = {
     tableName: string;
 }
-
+*/
 
 {/* 
 const EditOrDeleteList = (props: Table) => {
 */}
-const EditOrDeleteList = () => {
+const EditOrDeleteList = ({route, navigation}:any) => {
+    
+    const { Table } = route.params;
+
     return (
         <View>
             {/* 
             <GlobalHeader text="Edit or Delete a checklist" />
             */}
-            <Text>Test without props:</Text>
+            <Text>Table name you clicked: {JSON.stringify(Table)}</Text>
         </View>
     )
 }
