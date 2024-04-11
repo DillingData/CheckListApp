@@ -27,6 +27,7 @@ function MyStack() {
                 name="Edit" 
                 component={EditOrDeleteList}
                 options={{
+                    header: () => null,
                     headerStyle: {
                         backgroundColor: '#336DDD'
                     },
