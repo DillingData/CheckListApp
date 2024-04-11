@@ -48,6 +48,7 @@ const EditOrDeleteList = ({route, navigation}:any) => {
     if (isLoading == true) {
         return (
             <View>
+                <GlobalHeader text="Loading..." />
                 <Text>Loading...</Text>
             </View>
         )
@@ -60,12 +61,12 @@ const EditOrDeleteList = ({route, navigation}:any) => {
                     <View key={CheckList.ID} style={styles.AddedTasks}>
                         <TextInput style={styles.Text}>{CheckList.TASK}</TextInput>
                         <Pressable style={styles.DeleteButton} onPress={() => DeleteRow(CheckList.ID)}>
-                                    <Ionicons 
-                                        name="close-circle"
-                                        size={30}
-                                        color="#336DDD"
-                                    />
-                                </Pressable>
+                            <Ionicons 
+                                name="close-circle"
+                                size={30}
+                                color="#336DDD"
+                            />
+                        </Pressable>
                     </View>
                 ))}
                 <View style={styles.ButtonRow}>
@@ -80,12 +81,6 @@ const EditOrDeleteList = ({route, navigation}:any) => {
                         onPress={() => {navigation.goBack()}}
                     />
                 </View>
-
-                {/* 
-                <TouchableOpacity onPress={() => {navigation.goBack()}}>
-                    <Text>Back</Text>
-                </TouchableOpacity>
-                */}
             </View>
         )
     }
