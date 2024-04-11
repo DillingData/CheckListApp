@@ -30,6 +30,10 @@ const EditOrDeleteList = ({route, navigation}:any) => {
             query.executeSql('SELECT * FROM ' + tableName + '', [],
                 (_, { rows: { _array } }) => {
                     setChecklist(_array);
+                    setIsLoading(false);
+                },
+                (_, error): boolean | any => {
+                    setIsLoading(false);
                 }
             )
         })
@@ -41,27 +45,35 @@ const EditOrDeleteList = ({route, navigation}:any) => {
         }
     }, [isFocused])
 
-    return (
-        <View>
-            <GlobalHeader text={"Edit list: " + JSON.stringify(Table)} />
-            <Text>Table name you clicked: {JSON.stringify(Table)}</Text>
-            {chosenChecklist.map((CheckList) =>(
-                <View key={CheckList.ID} style={styles.AddedTasks}>
-                    <Text style={styles.Text}>{CheckList.TASK}</Text>
-                    <Pressable style={styles.DeleteButton} onPress={() => Test(CheckList.ID)}>
-                                <Ionicons 
-                                    name="close-circle"
-                                    size={30}
-                                    color="#336DDD"
-                                />
-                            </Pressable>
-                </View>
-            ))}
-            <TouchableOpacity onPress={() => {navigation.goBack()}}>
-                <Text>Back</Text>
-            </TouchableOpacity>
-        </View>
-    )
+    if (isLoading == true) {
+        return (
+            <View>
+                <Text>Loading...</Text>
+            </View>
+        )
+    } else {
+        return (
+            <View>
+                <GlobalHeader text={"Edit list: " + JSON.stringify(Table)} />
+                <Text>Table name you clicked: {JSON.stringify(Table)}</Text>
+                {chosenChecklist.map((CheckList) =>(
+                    <View key={CheckList.ID} style={styles.AddedTasks}>
+                        <Text style={styles.Text}>{CheckList.TASK}</Text>
+                        <Pressable style={styles.DeleteButton} onPress={() => Test(CheckList.ID)}>
+                                    <Ionicons 
+                                        name="close-circle"
+                                        size={30}
+                                        color="#336DDD"
+                                    />
+                                </Pressable>
+                    </View>
+                ))}
+                <TouchableOpacity onPress={() => {navigation.goBack()}}>
+                    <Text>Back</Text>
+                </TouchableOpacity>
+            </View>
+        )
+    }
 }
 
 const styles = StyleSheet.create ({
