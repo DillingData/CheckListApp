@@ -22,7 +22,15 @@ const EditOrDeleteList = ({route, navigation}:any) => {
     const tableName: string = JSON.stringify(Table).replace(/ /g, '_');
     const isFocused = useIsFocused();
 
-    //console.log(tableName);
+    const UpdateChecklist = (text: string | any, id: number | any) => {
+        
+        for (let counter = 0; counter < chosenChecklist.length; counter++){
+            if (chosenChecklist[counter].ID == id){
+                chosenChecklist[counter].TASK = text;
+            }
+            setChecklist(oldArray => [...chosenChecklist]);
+        }
+    }
 
     const loadData = () => {
         const db = SQLite.openDatabase('AllCheckLists.db');
@@ -33,6 +41,7 @@ const EditOrDeleteList = ({route, navigation}:any) => {
                     setIsLoading(false);
                 },
                 (_, error): boolean | any => {
+                    console.log(error);
                     setIsLoading(false);
                 }
             )
@@ -59,7 +68,11 @@ const EditOrDeleteList = ({route, navigation}:any) => {
                 
                 {chosenChecklist.map((CheckList) =>(
                     <View key={CheckList.ID} style={styles.AddedTasks}>
-                        <TextInput style={styles.Text}>{CheckList.TASK}</TextInput>
+                        <TextInput 
+                            style={styles.Text} 
+                            editable
+                            value={CheckList.TASK}
+                            onChangeText={text => UpdateChecklist(text, CheckList.ID)}/>
                         <Pressable style={styles.DeleteButton} onPress={() => DeleteRow(CheckList.ID)}>
                             <Ionicons 
                                 name="close-circle"
