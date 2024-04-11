@@ -1,5 +1,5 @@
 import React from "react";
-import { Text, View, StyleSheet, ScrollView, TouchableOpacity, Pressable } from "react-native";
+import { Text, View, StyleSheet, ScrollView, TouchableOpacity, Pressable, Button, TextInput } from "react-native";
 import { useState, useEffect } from 'react';
 import * as SQLite from 'expo-sqlite';
 import { useIsFocused } from "@react-navigation/native";
@@ -11,7 +11,7 @@ class CheckList {
     public TASK: string | undefined;
 }
 
-function Test(ID:number | undefined) {
+function DeleteRow(ID:number | undefined) {
     alert('Row with ID: ' + ID + ' were deleted');
 }
 
@@ -22,7 +22,7 @@ const EditOrDeleteList = ({route, navigation}:any) => {
     const tableName: string = JSON.stringify(Table).replace(/ /g, '_');
     const isFocused = useIsFocused();
 
-    console.log(tableName);
+    //console.log(tableName);
 
     const loadData = () => {
         const db = SQLite.openDatabase('AllCheckLists.db');
@@ -55,11 +55,11 @@ const EditOrDeleteList = ({route, navigation}:any) => {
         return (
             <View>
                 <GlobalHeader text={"Edit list: " + JSON.stringify(Table)} />
-                <Text>Table name you clicked: {JSON.stringify(Table)}</Text>
+                
                 {chosenChecklist.map((CheckList) =>(
                     <View key={CheckList.ID} style={styles.AddedTasks}>
-                        <Text style={styles.Text}>{CheckList.TASK}</Text>
-                        <Pressable style={styles.DeleteButton} onPress={() => Test(CheckList.ID)}>
+                        <TextInput style={styles.Text}>{CheckList.TASK}</TextInput>
+                        <Pressable style={styles.DeleteButton} onPress={() => DeleteRow(CheckList.ID)}>
                                     <Ionicons 
                                         name="close-circle"
                                         size={30}
@@ -68,9 +68,24 @@ const EditOrDeleteList = ({route, navigation}:any) => {
                                 </Pressable>
                     </View>
                 ))}
+                <View style={styles.ButtonRow}>
+                    <Button 
+                        title="Save"
+                    />
+                    <Button 
+                        title="Delete checklist"
+                    />
+                    <Button 
+                        title="Back"
+                        onPress={() => {navigation.goBack()}}
+                    />
+                </View>
+
+                {/* 
                 <TouchableOpacity onPress={() => {navigation.goBack()}}>
                     <Text>Back</Text>
                 </TouchableOpacity>
+                */}
             </View>
         )
     }
@@ -97,8 +112,12 @@ const styles = StyleSheet.create ({
         width: '82%',
     },
     DeleteButton: {
-        marginTop: 5,   
-    }
+        marginTop: 5, 
+    },
+    ButtonRow: {
+        flexDirection: 'row',
+        justifyContent: 'center',
+    },
 })
 
 export default EditOrDeleteList;
