@@ -22,8 +22,7 @@ const EditOrDeleteList = ({route, navigation}:any) => {
     const tableName: string = JSON.stringify(Table).replace(/ /g, '_');
     const isFocused = useIsFocused();
 
-    const UpdateChecklist = (text: string | any, id: number | any) => {
-        
+    const UpdateState = (text: string | any, id: number | any) => {
         for (let counter = 0; counter < chosenChecklist.length; counter++){
             if (chosenChecklist[counter].ID == id){
                 chosenChecklist[counter].TASK = text;
@@ -72,7 +71,7 @@ const EditOrDeleteList = ({route, navigation}:any) => {
                             style={styles.Text} 
                             editable
                             value={CheckList.TASK}
-                            onChangeText={text => UpdateChecklist(text, CheckList.ID)}/>
+                            onChangeText={text => UpdateState(text, CheckList.ID)}/>
                         <Pressable style={styles.DeleteButton} onPress={() => DeleteRow(CheckList.ID)}>
                             <Ionicons 
                                 name="close-circle"
