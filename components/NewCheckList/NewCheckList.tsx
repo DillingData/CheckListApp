@@ -248,8 +248,7 @@ const styles = StyleSheet.create ({
         marginTop: 10, 
     },
     DeleteButton: {
-        marginTop: 5,
-        
+        marginTop: 5,   
     }
 })
 

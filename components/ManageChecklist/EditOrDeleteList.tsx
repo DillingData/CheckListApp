@@ -1,13 +1,18 @@
 import React from "react";
-import { Text, View, StyleSheet, ScrollView, TouchableOpacity } from "react-native";
+import { Text, View, StyleSheet, ScrollView, TouchableOpacity, Pressable } from "react-native";
 import { useState, useEffect } from 'react';
 import * as SQLite from 'expo-sqlite';
 import { useIsFocused } from "@react-navigation/native";
 import GlobalHeader from "../GlobalHeader";
+import { Ionicons } from '@expo/vector-icons';
 
 class CheckList {
     public ID: number | undefined;
     public TASK: string | undefined;
+}
+
+function Test(ID:number | undefined) {
+    alert('Row with ID: ' + ID + ' were deleted');
 }
 
 const EditOrDeleteList = ({route, navigation}:any) => {
@@ -41,8 +46,15 @@ const EditOrDeleteList = ({route, navigation}:any) => {
             <GlobalHeader text={"Edit list: " + JSON.stringify(Table)} />
             <Text>Table name you clicked: {JSON.stringify(Table)}</Text>
             {chosenChecklist.map((CheckList) =>(
-                <View key={CheckList.ID}>
-                    <Text>{CheckList.TASK}</Text>
+                <View key={CheckList.ID} style={styles.AddedTasks}>
+                    <Text style={styles.Text}>{CheckList.TASK}</Text>
+                    <Pressable style={styles.DeleteButton} onPress={() => Test(CheckList.ID)}>
+                                <Ionicons 
+                                    name="close-circle"
+                                    size={30}
+                                    color="#336DDD"
+                                />
+                            </Pressable>
                 </View>
             ))}
             <TouchableOpacity onPress={() => {navigation.goBack()}}>
@@ -51,5 +63,30 @@ const EditOrDeleteList = ({route, navigation}:any) => {
         </View>
     )
 }
+
+const styles = StyleSheet.create ({
+    AddedTasks: {
+        flexDirection: 'row',
+        backgroundColor: '#FFFFFF',
+        borderRadius: 15,
+        height: 40,
+        width: '90%',
+        marginLeft: '5%',
+        marginRight: '5%',
+        marginTop: 10,
+        textAlign: 'center',
+    },
+    Text: {
+        color: '#336DDD',
+        fontSize: 18,
+        marginBottom: 8,
+        marginTop: 8,
+        marginLeft: 15, 
+        width: '82%',
+    },
+    DeleteButton: {
+        marginTop: 5,   
+    }
+})
 
 export default EditOrDeleteList;
