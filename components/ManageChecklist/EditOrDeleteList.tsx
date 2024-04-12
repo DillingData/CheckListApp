@@ -31,6 +31,14 @@ const EditOrDeleteList = ({route, navigation}:any) => {
         }
     }
 
+    const DeleteChecklist = () => {
+        alert('Checklist: ' + tableName + 'will be deleted')
+    }
+
+    const SaveCheckList = () => {
+        alert('Checklist: ' + tableName + ' will be updated in the database');
+    }
+
     const loadData = () => {
         const db = SQLite.openDatabase('AllCheckLists.db');
         db.transaction(query => {
@@ -84,9 +92,11 @@ const EditOrDeleteList = ({route, navigation}:any) => {
                 <View style={styles.ButtonRow}>
                     <Button 
                         title="Save"
+                        onPress={() => {SaveCheckList()}}
                     />
                     <Button 
                         title="Delete checklist"
+                        onPress={() => {DeleteChecklist()}}
                     />
                     <Button 
                         title="Back"
