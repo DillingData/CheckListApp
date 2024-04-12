@@ -1,5 +1,5 @@
 import React from "react";
-import { Text, View, StyleSheet, ScrollView, TouchableOpacity, Pressable, Button, TextInput } from "react-native";
+import { Text, View, StyleSheet, ScrollView, TouchableOpacity, Pressable, Button, TextInput, Alert } from "react-native";
 import { useState, useEffect } from 'react';
 import * as SQLite from 'expo-sqlite';
 import { useIsFocused } from "@react-navigation/native";
@@ -9,10 +9,6 @@ import { Ionicons } from '@expo/vector-icons';
 class CheckList {
     public ID: number | undefined;
     public TASK: string | undefined;
-}
-
-function DeleteRow(ID:number | undefined) {
-    alert('Row with ID: ' + ID + ' were deleted');
 }
 
 const EditOrDeleteList = ({route, navigation}:any) => {
@@ -31,8 +27,37 @@ const EditOrDeleteList = ({route, navigation}:any) => {
         }
     }
 
+    const DeleteRow = (ID:number | undefined) => {
+        const db = SQLite.openDatabase('AllCheckLists.db');
+        db.transaction(query => {
+            query.executeSql('DELETE FROM ' + tableName + ' WHERE ID = ' + ID);
+        })
+
+        loadData();
+        //alert('Row with ID: ' + ID + ' were deleted');
+    }
+
     const DeleteChecklist = () => {
-        alert('Checklist: ' + tableName + 'will be deleted')
+        Alert.alert(
+            'Delete confirmation',
+            'Do you want to delete ' + tableName,
+            [
+                {text: 'Cancel', onPress: () => console.log('cancel'), style: 'cancel'},
+                {text: 'Ok', onPress: () => DeleteConfirmed()},
+            ],
+
+        );
+
+    }
+
+    const DeleteConfirmed = () => {
+        const db = SQLite.openDatabase('AllCheckLists.db');
+        db.transaction(query => {
+            query.executeSql('DROP TABLE ' + tableName);
+        })
+
+        navigation.goBack();
+        //alert('Checklist: ' + tableName + 'will be deleted')
     }
 
     const SaveCheckList = () => {
