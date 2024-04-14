@@ -1,8 +1,10 @@
 import React from "react";
-import { Text, View, StyleSheet } from "react-native";
+import { Text, View, StyleSheet, Touchable, TouchableOpacity } from "react-native";
 import * as SQLite from 'expo-sqlite';
 import { useState, useEffect } from 'react';
 import { useIsFocused } from "@react-navigation/native";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import Activate from "../ActivateChecklist/ActivateList";
 
 class TableNameClass {
     public name: string | undefined;
@@ -19,9 +21,27 @@ type Checklist = {
     Headline: string;
 }
 
+const Stack = createNativeStackNavigator();
+
+function mainPageStack() {
+    return (
+        <Stack.Navigator>
+            <Stack.Screen 
+                name="HomeActive"
+                component={ShowActiveCheckLists}
+                options={{header: () => null}} />
+            <Stack.Screen 
+                name="Active"
+                component={Activate}
+                options={{header: () => null}} />
+        </Stack.Navigator>
+    )
+}
+
 const type = 'table';
 
-const ShowActiveCheckLists = (props: Checklist) => {
+//const ShowActiveCheckLists = (props: Checklist) => {
+const ShowActiveCheckLists = ({navigation}:any) => {
 
     const [isLoading, setIsLoading] = useState(true);
     const [names, setNames] = useState<TableNameClass[]>([]);
@@ -33,6 +53,7 @@ const ShowActiveCheckLists = (props: Checklist) => {
         let dbVersion = '';
         let headLine = '';
 
+        /*
         if (props.WhichDB === 'active') {
             dbVersion = 'ActiveCheckLists.db';
             headLine = 'Active Checklists'
@@ -40,9 +61,10 @@ const ShowActiveCheckLists = (props: Checklist) => {
             dbVersion = 'AllCheckLists.db';
             headLine = 'Checklists to start'
         } 
+        */
 
-        //const db = SQLite.openDatabase('ActiveCheckLists.db');
-        const db = SQLite.openDatabase(dbVersion);
+        const db = SQLite.openDatabase('ActiveCheckLists.db');
+        //const db = SQLite.openDatabase(dbVersion);
         let TempArray: TableNameClass[] = [];
 
         db.transaction(query => {
@@ -82,7 +104,7 @@ const ShowActiveCheckLists = (props: Checklist) => {
     } else if (names.length === 0) {
         return (
             <View>
-                <Text style={style.HeaderText}>{props.Headline}</Text>
+                <Text style={style.HeaderText}>Active Checklists</Text>
                 <Text>No active Checklists</Text>
             </View>
         )
@@ -90,11 +112,16 @@ const ShowActiveCheckLists = (props: Checklist) => {
         return (
             <View>
                 <View>
-                    <Text style={style.HeaderText}>{props.Headline}</Text>
+                    <Text style={style.HeaderText}>Active Checklists</Text>
                 </View>
                 {names.map((name) => (
                     <View key={name.name} style={style.Row}>
+                        <TouchableOpacity onPress={() => {navigation.navigate('Activate', { Table: name.name })}}>
+
+                        </TouchableOpacity>
+                        {/* 
                         <Text style={style.ActiveText}>{name.name} </Text>
+                        */}
                     </View>
                 ))}
             </View>
@@ -126,4 +153,5 @@ const style = StyleSheet.create({
     }
 })
 
-export default ShowActiveCheckLists;
+export default mainPageStack;
+//export default ShowActiveCheckLists;

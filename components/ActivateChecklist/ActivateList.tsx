@@ -5,7 +5,7 @@ import { useState } from "react";
 import GlobalHeader from "../GlobalHeader";
 import { getDefaultLibFileName } from "typescript";
 
-const activate = () => {
+const Activate = () => {
     return (
         <View>
             <Text>Activate Checklist</Text>
@@ -13,4 +13,4 @@ const activate = () => {
     )
 }
 
-export default activate;
+export default Activate;

@@ -11,11 +11,13 @@ const MainPage = () => {
                 <GlobalHeader text="Welcome" />
             </View>
             <ScrollView style={mainPageStyles.ActiveCheckList}>
-                <ShowActiveCheckLists WhichDB="active" Headline="Active Checklists" />
+                <ShowActiveCheckLists />
             </ScrollView>
+            {/* 
             <ScrollView style={mainPageStyles.ActiveCheckList}>
                 <ShowActiveCheckLists WhichDB="all" Headline="All Checklists" />
             </ScrollView>
+            */}
         </View>
     )
 }
