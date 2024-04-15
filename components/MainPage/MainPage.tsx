@@ -1,6 +1,7 @@
 import React from "react";
 import { Text, View, StyleSheet, ScrollView } from "react-native";
 import ShowActiveCheckLists from "./ActiveChecklists";
+import ShowAllCheckLists from "./AllChecklists";
 
 import GlobalHeader from "../GlobalHeader";
 
@@ -13,11 +14,11 @@ const MainPage = () => {
             <ScrollView style={mainPageStyles.ActiveCheckList}>
                 <ShowActiveCheckLists />
             </ScrollView>
-            {/* 
+            
             <ScrollView style={mainPageStyles.ActiveCheckList}>
-                <ShowActiveCheckLists WhichDB="all" Headline="All Checklists" />
+                <ShowAllCheckLists />
             </ScrollView>
-            */}
+            
         </View>
     )
 }

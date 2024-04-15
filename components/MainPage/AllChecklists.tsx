@@ -28,7 +28,7 @@ function mainPageStack() {
         <Stack.Navigator>
             <Stack.Screen 
                 name="HomeActive"
-                component={ShowActiveCheckLists}
+                component={ShowAllCheckLists}
                 options={{header: () => null}} />
             <Stack.Screen 
                 name="Active"
@@ -41,7 +41,7 @@ function mainPageStack() {
 const type = 'table';
 
 //const ShowActiveCheckLists = (props: Checklist) => {
-const ShowActiveCheckLists = ({navigation}:any) => {
+const ShowAllCheckLists = ({navigation}:any) => {
 
     const [isLoading, setIsLoading] = useState(true);
     const [names, setNames] = useState<TableNameClass[]>([]);
@@ -63,8 +63,8 @@ const ShowActiveCheckLists = ({navigation}:any) => {
         } 
         */
 
-        const db = SQLite.openDatabase('ActiveCheckLists.db');
-        //const db = SQLite.openDatabase(dbVersion);
+        //const db = SQLite.openDatabase('ActiveCheckLists.db');
+        const db = SQLite.openDatabase('AllCheckLists.db');
         let TempArray: TableNameClass[] = [];
 
         db.transaction(query => {
@@ -106,15 +106,15 @@ const ShowActiveCheckLists = ({navigation}:any) => {
     } else if (names.length == 0) {
         return (
             <View>
-                <Text style={style.HeaderText}>Active Checklists</Text>
-                <Text>No active Checklists</Text>
+                <Text style={style.HeaderText}>All Checklists</Text>
+                <Text>No Checklists</Text>
             </View>
         )
     } else {
         return (
             <View>
                 <View>
-                    <Text style={style.HeaderText}>Active Checklists</Text>
+                    <Text style={style.HeaderText}>All Checklists</Text>
                 </View>
                 {names.map((name) => (
                     <View key={name.name} style={style.Row}>
@@ -156,4 +156,4 @@ const style = StyleSheet.create({
 })
 
 //export default mainPageStack;
-export default ShowActiveCheckLists;
+export default ShowAllCheckLists;
