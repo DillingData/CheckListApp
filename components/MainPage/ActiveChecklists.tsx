@@ -76,7 +76,9 @@ const ShowActiveCheckLists = ({navigation}:any) => {
                         TempArray[counter].name = TempArray[counter].name?.replaceAll('_', ' ');
                     }
                     setNames(TempArray);
+                    console.log('Test')
                     setIsLoading(false);
+                    console.log(names.length);
                 },
                 (_, error): boolean | any => {
                     console.log(error + 'Where i get the tables'),
@@ -101,7 +103,7 @@ const ShowActiveCheckLists = ({navigation}:any) => {
                 <Text>Loading...</Text>
             </View>
         ) 
-    } else if (names.length === 0) {
+    } else if (names.length == 0) {
         return (
             <View>
                 <Text style={style.HeaderText}>Active Checklists</Text>
@@ -117,7 +119,7 @@ const ShowActiveCheckLists = ({navigation}:any) => {
                 {names.map((name) => (
                     <View key={name.name} style={style.Row}>
                         <TouchableOpacity onPress={() => {navigation.navigate('Activate', { Table: name.name })}}>
-
+                            <Text style={style.ActiveText}>{name.name}</Text>
                         </TouchableOpacity>
                         {/* 
                         <Text style={style.ActiveText}>{name.name} </Text>

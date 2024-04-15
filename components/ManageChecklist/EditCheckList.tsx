@@ -29,6 +29,7 @@ function MyStack() {
                 options={{
                     header: () => null,
                     headerStyle: {
+                        backgroundColor: '#336DDD'
                     },
                     headerTintColor: '#FFFFFF'
                 }}
