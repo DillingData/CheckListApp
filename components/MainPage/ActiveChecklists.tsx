@@ -5,6 +5,7 @@ import { useState, useEffect } from 'react';
 import { useIsFocused } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import Activate from "../ActivateChecklist/ActivateList";
+import MainPageStack from "./StackNavigation";
 
 class TableNameClass {
     public name: string | undefined;
@@ -21,6 +22,7 @@ type Checklist = {
     Headline: string;
 }
 
+{/* 
 const Stack = createNativeStackNavigator();
 
 function mainPageStack() {
@@ -37,7 +39,7 @@ function mainPageStack() {
         </Stack.Navigator>
     )
 }
-
+*/}
 const type = 'table';
 
 //const ShowActiveCheckLists = (props: Checklist) => {
@@ -155,5 +157,5 @@ const style = StyleSheet.create({
     }
 })
 
-//export default mainPageStack;
-export default ShowActiveCheckLists;
+export default MainPageStack;
+//export default ShowActiveCheckLists;

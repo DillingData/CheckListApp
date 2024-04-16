@@ -2,15 +2,23 @@ import React from "react";
 import { Text, View, StyleSheet, ScrollView } from "react-native";
 import ShowActiveCheckLists from "./ActiveChecklists";
 import ShowAllCheckLists from "./AllChecklists";
-
+import MainPageStack from "./ActiveChecklists";
 import GlobalHeader from "../GlobalHeader";
 
 const MainPage = () => {
+
+    
+
     return (
         <View>
             <View>
                 <GlobalHeader text="Welcome" />
             </View>
+
+            <ScrollView style={mainPageStyles.ActiveCheckList}>
+                <MainPageStack />
+            </ScrollView>
+             {/*
             <ScrollView style={mainPageStyles.ActiveCheckList}>
                 <ShowActiveCheckLists />
             </ScrollView>
@@ -18,7 +26,7 @@ const MainPage = () => {
             <ScrollView style={mainPageStyles.ActiveCheckList}>
                 <ShowAllCheckLists />
             </ScrollView>
-            
+            */}
         </View>
     )
 }

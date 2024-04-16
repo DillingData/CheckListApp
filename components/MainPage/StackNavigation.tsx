@@ -19,3 +19,5 @@ function MainPageStack() {
         </Stack.Navigator>
     )
 }
+
+export default MainPageStack;
