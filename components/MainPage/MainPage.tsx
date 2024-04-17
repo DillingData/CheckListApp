@@ -1,13 +1,71 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Text, View, StyleSheet, ScrollView } from "react-native";
-import ShowActiveCheckLists from "./ActiveChecklists";
-import ShowAllCheckLists from "./AllChecklists";
-import MainPageStack from "./ActiveChecklists";
+import { useState } from "react";
 import GlobalHeader from "../GlobalHeader";
+import * as SQLite from 'expo-sqlite';
+import { useIsFocused } from "@react-navigation/native";
+
+class TableNameClass {
+    public name: string | undefined;
+}
 
 const MainPage = () => {
+    const [active, setActive] = useState<TableNameClass[]>([]);
+    const [all, setAll] = useState<TableNameClass[]>([]);
+    const dbActive = SQLite.openDatabase('ActiveCheckLists.db');
+    const dbAll = SQLite.openDatabase('AllCheckLists.db');
+    const isFocused = useIsFocused();
+    const type = 'table';
+    let TempArray: TableNameClass[] = [];
 
-    
+    const loadData = () => {
+        dbActive.transaction(query => {
+            try {
+                query.executeSql('SELECT name FROM sqlite_master WHERE type=\'' + type + '\' AND name <> \'sqlite_sequence\'', [],
+                (_, { rows: { _array } }) => {
+                    TempArray = _array;
+                    for (let counter:number = 0; counter < TempArray.length; counter++) {
+                        TempArray[counter].name = TempArray[counter].name?.replaceAll('_', ' ');
+                    }
+                    setActive(TempArray);
+                    console.log('Test')
+                },
+                (_, error): boolean | any => {
+                    console.log(error + 'Where i get the tables');
+                }
+            );
+            } catch (error) {
+                console.log(error);
+            }
+        })
+
+        dbAll.transaction(query => {
+            try {
+                query.executeSql('SELECT name FROM sqlite_master WHERE type=\'' + type + '\' AND name <> \'sqlite_sequence\'', [],
+                (_, { rows: { _array } }) => {
+                    TempArray = _array;
+                    for (let counter:number = 0; counter < TempArray.length; counter++) {
+                        TempArray[counter].name = TempArray[counter].name?.replaceAll('_', ' ');
+                    }
+                    setAll(TempArray);
+                    console.log('Test')
+                },
+                (_, error): boolean | any => {
+                    console.log(error + 'Where i get the tables');
+                }
+            );
+            } catch (error) {
+                console.log(error);
+            }
+        })
+    }
+
+
+    useEffect(() => {
+        if (isFocused) {
+            loadData();
+        }
+    }, [isFocused])
 
     return (
         <View>
@@ -16,7 +74,7 @@ const MainPage = () => {
             </View>
 
             <ScrollView style={mainPageStyles.ActiveCheckList}>
-                <MainPageStack />
+                
             </ScrollView>
              {/*
             <ScrollView style={mainPageStyles.ActiveCheckList}>

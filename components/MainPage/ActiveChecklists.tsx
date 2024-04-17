@@ -50,49 +50,49 @@ const ShowActiveCheckLists = ({navigation}:any) => {
     const [activeChecklist, setActive] = useState<ActiveChecklist[]>([]);
     const isFocused = useIsFocused();
 
-    const loadData = () => {
+    
         
-        let dbVersion = '';
-        let headLine = '';
+    let dbVersion = '';
+    let headLine = '';
 
-        /*
-        if (props.WhichDB === 'active') {
-            dbVersion = 'ActiveCheckLists.db';
-            headLine = 'Active Checklists'
-        } else if (props.WhichDB === 'all') {
-            dbVersion = 'AllCheckLists.db';
-            headLine = 'Checklists to start'
-        } 
-        */
+    /*
+    if (props.WhichDB === 'active') {
+        dbVersion = 'ActiveCheckLists.db';
+        headLine = 'Active Checklists'
+    } else if (props.WhichDB === 'all') {
+        dbVersion = 'AllCheckLists.db';
+        headLine = 'Checklists to start'
+    } 
+    */
 
-        const db = SQLite.openDatabase('ActiveCheckLists.db');
-        //const db = SQLite.openDatabase(dbVersion);
-        let TempArray: TableNameClass[] = [];
+    const db = SQLite.openDatabase('ActiveCheckLists.db');
+    //const db = SQLite.openDatabase(dbVersion);
+    let TempArray: TableNameClass[] = [];
 
-        db.transaction(query => {
-            try {
-                query.executeSql('SELECT name FROM sqlite_master WHERE type=\'' + type + '\' AND name <> \'sqlite_sequence\'', [],
-                (_, { rows: { _array } }) => {
-                    TempArray = _array;
-                    for (let counter:number = 0; counter < TempArray.length; counter++) {
-                        TempArray[counter].name = TempArray[counter].name?.replaceAll('_', ' ');
-                    }
-                    setNames(TempArray);
-                    console.log('Test')
-                    setIsLoading(false);
-                    console.log(names.length);
-                },
-                (_, error): boolean | any => {
-                    console.log(error + 'Where i get the tables'),
-                    setIsLoading(false);
+    db.transaction(query => {
+        try {
+            query.executeSql('SELECT name FROM sqlite_master WHERE type=\'' + type + '\' AND name <> \'sqlite_sequence\'', [],
+            (_, { rows: { _array } }) => {
+                TempArray = _array;
+                for (let counter:number = 0; counter < TempArray.length; counter++) {
+                    TempArray[counter].name = TempArray[counter].name?.replaceAll('_', ' ');
                 }
-            );
-            } catch (error) {
-                console.log(error);
+                setNames(TempArray);
+                console.log('Test')
+                setIsLoading(false);
+                console.log(names.length);
+            },
+            (_, error): boolean | any => {
+                console.log(error + 'Where i get the tables'),
+                setIsLoading(false);
             }
-        })
-    }
+        );
+        } catch (error) {
+            console.log(error);
+        }
+    })
 
+    {/* 
     useEffect(() => {
         if (isFocused) {
             loadData();
@@ -123,14 +123,12 @@ const ShowActiveCheckLists = ({navigation}:any) => {
                         <TouchableOpacity onPress={() => {navigation.navigate('Activate', { Table: name.name })}}>
                             <Text style={style.ActiveText}>{name.name}</Text>
                         </TouchableOpacity>
-                        {/* 
-                        <Text style={style.ActiveText}>{name.name} </Text>
-                        */}
                     </View>
                 ))}
             </View>
         )
     }
+    */}
 }
 
 const style = StyleSheet.create({
@@ -157,5 +155,5 @@ const style = StyleSheet.create({
     }
 })
 
-export default MainPageStack;
-//export default ShowActiveCheckLists;
+//export default MainPageStack;
+export default ShowActiveCheckLists;
