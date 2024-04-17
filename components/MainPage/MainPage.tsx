@@ -17,7 +17,7 @@ function MyStack() {
     return (
         <Stack.Navigator>
             <Stack.Screen 
-                name="Home" 
+                name="Main" 
                 component={MainPage}
                 options={{header: () => null}}
             />
@@ -56,7 +56,6 @@ const MainPage = ({navigation}:any) => {
                         TempArray[counter].name = TempArray[counter].name?.replaceAll('_', ' ');
                     }
                     setActive(TempArray);
-                    console.log('Test')
                 },
                 (_, error): boolean | any => {
                     console.log(error + 'Where i get the tables');
@@ -76,7 +75,6 @@ const MainPage = ({navigation}:any) => {
                         TempArray[counter].name = TempArray[counter].name?.replaceAll('_', ' ');
                     }
                     setAll(TempArray);
-                    console.log('Test')
                 },
                 (_, error): boolean | any => {
                     console.log(error + 'Where i get the tables');
@@ -86,10 +84,8 @@ const MainPage = ({navigation}:any) => {
                 console.log(error);
             }
         })
-
         setIsLoading(false);
     }
-
 
     useEffect(() => {
         if (isFocused) {
@@ -103,7 +99,7 @@ const MainPage = ({navigation}:any) => {
                 <Text>Loading...</Text>
             </View>
         ) 
-    } else if (active.length == 0) {
+    } else if (active.length == 0 && all.length == 0) {
         return (
             <View>
                 <View>
@@ -111,26 +107,59 @@ const MainPage = ({navigation}:any) => {
                 </View>
                 <Text style={mainPageStyles.HeaderText}>Active Checklists</Text>
                 <Text>No active Checklists</Text>
+
+                <View>
+                    <GlobalHeader text="Welcome" />
+                </View>
+                <Text style={mainPageStyles.HeaderText}>All Checklists</Text>
+                <Text>No Checklists</Text>
             </View>
         )
-    } else {
+    } else if (active.length == 0 && all.length != 0) {
         return (
             <View>
                 <View>
                     <GlobalHeader text="Welcome" />
                 </View>
+
                 <View>
-                    <Text style={mainPageStyles.HeaderText2}>Active Checklists</Text>
+                    <View>
+                        </View>
+                        <Text style={mainPageStyles.HeaderText}>Active Checklists</Text>
+                        <Text>No active Checklists</Text>
+                    </View>
+                <View>
+                    <Text style={mainPageStyles.HeaderText2}>All Checklists</Text>
                 </View>
-                {active.map((name) => (
+                {all.map((name) => (
                     <View key={name.name} style={mainPageStyles.Row}>
-                        <TouchableOpacity onPress={() => {navigation.navigate('Activate', { Table: name.name })}}>
+                        <TouchableOpacity onPress={() => {navigation.navigate('Edit', { Table: name.name })}}>
                             <Text style={mainPageStyles.ActiveText}>{name.name}</Text>
                         </TouchableOpacity>
                     </View>
                 ))}
             </View>
         )
+    } else if (active.length != 0 && all.length == 0) {
+        <View>
+            <View>
+                <Text style={mainPageStyles.HeaderText2}>Active Checklists</Text>
+            </View>
+
+            {active.map((name) => (
+                <View key={name.name} style={mainPageStyles.Row}>
+                    <TouchableOpacity onPress={() => {navigation.navigate('Activate', { Table: name.name })}}>
+                        <Text style={mainPageStyles.ActiveText}>{name.name}</Text>
+                    </TouchableOpacity>
+                </View>
+            ))}
+            <View>
+                <Text style={mainPageStyles.HeaderText}>Active Checklists</Text>
+                <Text>No active Checklists</Text>
+            </View>
+        </View>
+    } else if (active.length != 0 && all.length != 0) {
+        
     }
 }
 
@@ -178,4 +207,4 @@ const mainPageStyles = StyleSheet.create({
     }
 })
 
-export default MainPage;
+export default MyStack;

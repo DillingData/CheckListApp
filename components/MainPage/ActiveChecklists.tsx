@@ -43,7 +43,7 @@ function mainPageStack() {
 const type = 'table';
 
 //const ShowActiveCheckLists = (props: Checklist) => {
-const ShowActiveCheckLists = ({navigation}:any) => {
+const ShowActiveCheckLists = ({TableNameClass}:any) => {
 
     const [isLoading, setIsLoading] = useState(true);
     const [names, setNames] = useState<TableNameClass[]>([]);
