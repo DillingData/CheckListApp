@@ -12,6 +12,7 @@ class TableNameClass {
 const MainPage = () => {
     const [active, setActive] = useState<TableNameClass[]>([]);
     const [all, setAll] = useState<TableNameClass[]>([]);
+    const [isLoading, setIsLoading] = useState(true);
     const dbActive = SQLite.openDatabase('ActiveCheckLists.db');
     const dbAll = SQLite.openDatabase('AllCheckLists.db');
     const isFocused = useIsFocused();
@@ -58,6 +59,8 @@ const MainPage = () => {
                 console.log(error);
             }
         })
+
+        setIsLoading(false);
     }
 
 
@@ -67,26 +70,35 @@ const MainPage = () => {
         }
     }, [isFocused])
 
-    return (
-        <View>
+    if (isLoading == true) {
+        return (
             <View>
-                <GlobalHeader text="Welcome" />
+                <Text>Loading...</Text>
             </View>
-
-            <ScrollView style={mainPageStyles.ActiveCheckList}>
-                
-            </ScrollView>
-             {/*
-            <ScrollView style={mainPageStyles.ActiveCheckList}>
-                <ShowActiveCheckLists />
-            </ScrollView>
-            
-            <ScrollView style={mainPageStyles.ActiveCheckList}>
-                <ShowAllCheckLists />
-            </ScrollView>
-            */}
-        </View>
-    )
+        ) 
+    } else if (names.length == 0) {
+        return (
+            <View>
+                <Text style={style.HeaderText}>Active Checklists</Text>
+                <Text>No active Checklists</Text>
+            </View>
+        )
+    } else {
+        return (
+            <View>
+                <View>
+                    <Text style={style.HeaderText}>Active Checklists</Text>
+                </View>
+                {names.map((name) => (
+                    <View key={name.name} style={style.Row}>
+                        <TouchableOpacity onPress={() => {navigation.navigate('Activate', { Table: name.name })}}>
+                            <Text style={style.ActiveText}>{name.name}</Text>
+                        </TouchableOpacity>
+                    </View>
+                ))}
+            </View>
+        )
+    }
 }
 
 const mainPageStyles = StyleSheet.create({
