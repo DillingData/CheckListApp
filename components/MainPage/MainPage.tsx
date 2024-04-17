@@ -1,15 +1,42 @@
 import React, { useEffect } from "react";
-import { Text, View, StyleSheet, ScrollView } from "react-native";
+import { Text, View, StyleSheet, ScrollView, TouchableOpacity } from "react-native";
 import { useState } from "react";
 import GlobalHeader from "../GlobalHeader";
 import * as SQLite from 'expo-sqlite';
 import { useIsFocused } from "@react-navigation/native";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import Activate from "../ActivateChecklist/ActivateList";
 
 class TableNameClass {
     public name: string | undefined;
 }
 
-const MainPage = () => {
+const Stack = createNativeStackNavigator();
+
+function MyStack() {
+    return (
+        <Stack.Navigator>
+            <Stack.Screen 
+                name="Home" 
+                component={MainPage}
+                options={{header: () => null}}
+            />
+            <Stack.Screen 
+                name="Edit" 
+                component={Activate}
+                options={{
+                    header: () => null,
+                    headerStyle: {
+                        backgroundColor: '#336DDD'
+                    },
+                    headerTintColor: '#FFFFFF'
+                }}
+            />
+        </Stack.Navigator>
+    )
+}
+
+const MainPage = ({navigation}:any) => {
     const [active, setActive] = useState<TableNameClass[]>([]);
     const [all, setAll] = useState<TableNameClass[]>([]);
     const [isLoading, setIsLoading] = useState(true);
@@ -76,10 +103,13 @@ const MainPage = () => {
                 <Text>Loading...</Text>
             </View>
         ) 
-    } else if (names.length == 0) {
+    } else if (active.length == 0) {
         return (
             <View>
-                <Text style={style.HeaderText}>Active Checklists</Text>
+                <View>
+                    <GlobalHeader text="Welcome" />
+                </View>
+                <Text style={mainPageStyles.HeaderText}>Active Checklists</Text>
                 <Text>No active Checklists</Text>
             </View>
         )
@@ -87,12 +117,15 @@ const MainPage = () => {
         return (
             <View>
                 <View>
-                    <Text style={style.HeaderText}>Active Checklists</Text>
+                    <GlobalHeader text="Welcome" />
                 </View>
-                {names.map((name) => (
-                    <View key={name.name} style={style.Row}>
+                <View>
+                    <Text style={mainPageStyles.HeaderText2}>Active Checklists</Text>
+                </View>
+                {active.map((name) => (
+                    <View key={name.name} style={mainPageStyles.Row}>
                         <TouchableOpacity onPress={() => {navigation.navigate('Activate', { Table: name.name })}}>
-                            <Text style={style.ActiveText}>{name.name}</Text>
+                            <Text style={mainPageStyles.ActiveText}>{name.name}</Text>
                         </TouchableOpacity>
                     </View>
                 ))}
@@ -123,6 +156,26 @@ const mainPageStyles = StyleSheet.create({
         marginRight: '5%',
         height: '35%',
     },
+    HeaderText2: {
+        fontSize: 22,
+        color: '#336DDD',
+        fontWeight: '800',
+        textAlign: 'center',
+    },
+
+    ActiveText: {
+        color: '#336DDD',
+        fontSize: 18,
+        marginBottom: 8,
+        marginTop: 8,
+        marginLeft: 10, 
+    },
+    Row: {
+        flexDirection: 'row',
+        backgroundColor: '#FFFFFF',
+        borderRadius: 15,
+        marginTop: 10,
+    }
 })
 
 export default MainPage;
