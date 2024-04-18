@@ -161,27 +161,34 @@ const MainPage = ({navigation}:any) => {
     } else if (active.length != 0 && all.length != 0) {
         <View>
             <View>
-                <Text style={mainPageStyles.HeaderText2}>Active Checklists</Text>
-            </View>
-
-            {active.map((name) => (
-                <View key={name.name} style={mainPageStyles.Row}>
-                    <TouchableOpacity onPress={() => {navigation.navigate('Activate', { Table: name.name })}}>
-                        <Text style={mainPageStyles.ActiveText}>{name.name}</Text>
-                    </TouchableOpacity>
+                <View>
+                    <Text style={mainPageStyles.HeaderText2}>Active Checklists</Text>
                 </View>
-            ))}
-
-<           View>
-                <Text style={mainPageStyles.HeaderText2}>All Checklists</Text>
+                <ScrollView>
+                    {active.map((name) => (
+                        <View key={name.name} style={mainPageStyles.Row}>
+                            <TouchableOpacity onPress={() => {navigation.navigate('Activate', { Table: name.name })}}>
+                                <Text style={mainPageStyles.ActiveText}>{name.name}</Text>
+                            </TouchableOpacity>
+                        </View>
+                    ))}
+                </ScrollView>
             </View>
-            {all.map((name) => (
-                <View key={name.name} style={mainPageStyles.Row}>
-                    <TouchableOpacity onPress={() => {navigation.navigate('Edit', { Table: name.name })}}>
-                        <Text style={mainPageStyles.ActiveText}>{name.name}</Text>
-                    </TouchableOpacity>
+            
+            <View>
+                <View>
+                    <Text style={mainPageStyles.HeaderText2}>All Checklists</Text>
                 </View>
-            ))}
+                <ScrollView>
+                    {all.map((name) => (
+                        <View key={name.name} style={mainPageStyles.Row}>
+                            <TouchableOpacity onPress={() => {navigation.navigate('Edit', { Table: name.name })}}>
+                                <Text style={mainPageStyles.ActiveText}>{name.name}</Text>
+                            </TouchableOpacity>
+                        </View>
+                    ))}
+                </ScrollView>
+            </View>
         </View>
     }
 }
