@@ -5,9 +5,10 @@ import { useState } from "react";
 import GlobalHeader from "../GlobalHeader";
 import { getDefaultLibFileName } from "typescript";
 
-const Activate = () => {
+const Activate = ({route, navigation}:any) => {
     return (
         <View>
+            <GlobalHeader text="Activate Checklist" />
             <Text>Activate Checklist</Text>
         </View>
     )
