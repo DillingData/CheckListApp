@@ -16,6 +16,10 @@ const Activate = ({route, navigation}:any) => {
             <Text>Activate Checklist</Text>
             <Text>{tableName}</Text>
             <Text>{tableName2}</Text>
+            <Button 
+                title="Back"
+                onPress={() => {navigation.goBack()}}
+            />
         </View>
     )
 }
