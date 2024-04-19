@@ -6,10 +6,16 @@ import GlobalHeader from "../GlobalHeader";
 import { getDefaultLibFileName } from "typescript";
 
 const Activate = ({route, navigation}:any) => {
+    const { Table } = route.params;
+    const tableName: string = JSON.stringify(Table).replace(/ /g, '_');
+    const tableName2: string = JSON.stringify(Table);
+
     return (
         <View>
             <GlobalHeader text="Activate Checklist" />
             <Text>Activate Checklist</Text>
+            <Text>{tableName}</Text>
+            <Text>{tableName2}</Text>
         </View>
     )
 }
