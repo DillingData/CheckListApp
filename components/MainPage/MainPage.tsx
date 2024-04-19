@@ -135,13 +135,15 @@ const MainPage = ({navigation}:any) => {
                     <View>
                         <Text style={mainPageStyles.HeaderText2}>All Checklists</Text>
                     </View>
-                    {all.map((name) => (
-                        <View key={name.name} style={mainPageStyles.Row}>
-                            <TouchableOpacity onPress={() => {navigation.navigate('Edit', { Table: name.name })}}>
-                                <Text style={mainPageStyles.ActiveText}>{name.name}</Text>
-                            </TouchableOpacity>
-                        </View>
-                    ))}
+                    <ScrollView>
+                        {all.map((name) => (
+                            <View key={name.name} style={mainPageStyles.Row}>
+                                <TouchableOpacity onPress={() => {navigation.navigate('Edit', { Table: name.name })}}>
+                                    <Text style={mainPageStyles.ActiveText}>{name.name}</Text>
+                                </TouchableOpacity>
+                            </View>
+                        ))}
+                    </ScrollView>
                 </View>
             </View>
         )
@@ -151,14 +153,15 @@ const MainPage = ({navigation}:any) => {
                 <View>
                     <Text style={mainPageStyles.HeaderText2}>Active Checklists</Text>
                 </View>
-
-                {active.map((name) => (
-                    <View key={name.name} style={mainPageStyles.Row}>
-                        <TouchableOpacity onPress={() => {navigation.navigate('Activate', { Table: name.name })}}>
-                            <Text style={mainPageStyles.ActiveText}>{name.name}</Text>
-                        </TouchableOpacity>
-                    </View>
-                ))}
+                <ScrollView>
+                    {active.map((name) => (
+                        <View key={name.name} style={mainPageStyles.Row}>
+                            <TouchableOpacity onPress={() => {navigation.navigate('Activate', { Table: name.name })}}>
+                                <Text style={mainPageStyles.ActiveText}>{name.name}</Text>
+                            </TouchableOpacity>
+                        </View>
+                    ))}
+                </ScrollView>
             </View>
 
             <View style={mainPageStyles.Element}>
@@ -244,7 +247,7 @@ const mainPageStyles = StyleSheet.create({
         marginTop: 10,
     },
     Element: {
-        height: 400,
+        height: 300,
     }
 })
 
