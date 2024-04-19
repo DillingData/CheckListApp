@@ -9,6 +9,10 @@ const Activate = ({route, navigation}:any) => {
     const { Table } = route.params;
     const tableName: string = JSON.stringify(Table).replace(/ /g, '_');
     const tableName2: string = JSON.stringify(Table);
+    const dbAll = SQLite.openDatabase("AllCheckLists.db");
+    const dbActive = SQLite.openDatabase("ActiveCheckLists.db");
+
+    
 
     return (
         <View>
