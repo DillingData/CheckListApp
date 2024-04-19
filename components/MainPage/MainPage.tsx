@@ -105,14 +105,16 @@ const MainPage = ({navigation}:any) => {
                 <View>
                     <GlobalHeader text="Welcome" />
                 </View>
-                <Text style={mainPageStyles.HeaderText}>Active Checklists</Text>
-                <Text>No active Checklists</Text>
 
-                <View>
-                    <GlobalHeader text="Welcome" />
+                <View style={mainPageStyles.Element}>
+                    <Text style={mainPageStyles.HeaderText}>Active Checklists</Text>
+                    <Text>No active Checklists</Text>
                 </View>
-                <Text style={mainPageStyles.HeaderText}>All Checklists</Text>
-                <Text>No Checklists</Text>
+
+                <View style={mainPageStyles.Element}>
+                    <Text style={mainPageStyles.HeaderText}>All Checklists</Text>
+                    <Text>No Checklists</Text>
+                </View>
             </View>
         )
     } else if (active.length == 0 && all.length != 0) {
@@ -122,45 +124,51 @@ const MainPage = ({navigation}:any) => {
                     <GlobalHeader text="Welcome" />
                 </View>
 
-                <View>
+                <View style={mainPageStyles.Element}>
                     <View>
-                        </View>
                         <Text style={mainPageStyles.HeaderText2}>Active Checklists</Text>
                         <Text>No active Checklists</Text>
                     </View>
-                <View>
-                    <Text style={mainPageStyles.HeaderText2}>All Checklists</Text>
                 </View>
-                {all.map((name) => (
+
+                <View style={mainPageStyles.Element}>
+                    <View>
+                        <Text style={mainPageStyles.HeaderText2}>All Checklists</Text>
+                    </View>
+                    {all.map((name) => (
+                        <View key={name.name} style={mainPageStyles.Row}>
+                            <TouchableOpacity onPress={() => {navigation.navigate('Edit', { Table: name.name })}}>
+                                <Text style={mainPageStyles.ActiveText}>{name.name}</Text>
+                            </TouchableOpacity>
+                        </View>
+                    ))}
+                </View>
+            </View>
+        )
+    } else if (active.length != 0 && all.length == 0) {
+        <View>
+            <View style={mainPageStyles.Element}>
+                <View>
+                    <Text style={mainPageStyles.HeaderText2}>Active Checklists</Text>
+                </View>
+
+                {active.map((name) => (
                     <View key={name.name} style={mainPageStyles.Row}>
-                        <TouchableOpacity onPress={() => {navigation.navigate('Edit', { Table: name.name })}}>
+                        <TouchableOpacity onPress={() => {navigation.navigate('Activate', { Table: name.name })}}>
                             <Text style={mainPageStyles.ActiveText}>{name.name}</Text>
                         </TouchableOpacity>
                     </View>
                 ))}
             </View>
-        )
-    } else if (active.length != 0 && all.length == 0) {
-        <View>
-            <View>
-                <Text style={mainPageStyles.HeaderText2}>Active Checklists</Text>
-            </View>
 
-            {active.map((name) => (
-                <View key={name.name} style={mainPageStyles.Row}>
-                    <TouchableOpacity onPress={() => {navigation.navigate('Activate', { Table: name.name })}}>
-                        <Text style={mainPageStyles.ActiveText}>{name.name}</Text>
-                    </TouchableOpacity>
-                </View>
-            ))}
-            <View>
+            <View style={mainPageStyles.Element}>
                 <Text style={mainPageStyles.HeaderText}>All Checklists</Text>
                 <Text>No Checklists</Text>
             </View>
         </View>
     } else if (active.length != 0 && all.length != 0) {
         <View>
-            <View>
+            <View style={mainPageStyles.Element}>
                 <View>
                     <Text style={mainPageStyles.HeaderText2}>Active Checklists</Text>
                 </View>
@@ -175,7 +183,7 @@ const MainPage = ({navigation}:any) => {
                 </ScrollView>
             </View>
             
-            <View>
+            <View style={mainPageStyles.Element}>
                 <View>
                     <Text style={mainPageStyles.HeaderText2}>All Checklists</Text>
                 </View>
@@ -234,6 +242,9 @@ const mainPageStyles = StyleSheet.create({
         backgroundColor: '#FFFFFF',
         borderRadius: 15,
         marginTop: 10,
+    },
+    Element: {
+        height: 400,
     }
 })
 
