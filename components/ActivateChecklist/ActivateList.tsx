@@ -5,6 +5,17 @@ import { useState } from "react";
 import GlobalHeader from "../GlobalHeader";
 import { getDefaultLibFileName } from "typescript";
 
+class ChosenChecklist {
+    public ID: number | undefined;
+    public TASK: string | undefined;
+}
+
+class ActivatedChecklist {
+    public ID: number | undefined;
+    public TASK: string | undefined;
+    public COMPLETED: boolean | undefined;
+}
+
 const Activate = ({route, navigation}:any) => {
     const { Table } = route.params;
     const tableName: string = JSON.stringify(Table).replace(/ /g, '_');
