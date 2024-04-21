@@ -17,20 +17,35 @@ class ActivatedChecklist {
 }
 
 const Activate = ({route, navigation}:any) => {
-    const { Table } = route.params;
-    const tableName: string = JSON.stringify(Table).replace(/ /g, '_');
-    const tableName2: string = JSON.stringify(Table);
+    let tableName: string | undefined;
+    let tableName2: string | undefined;
+    if (route.params != undefined) {
+        const { Table } = route.params;
+        if (Table != undefined) {
+            tableName = JSON.stringify(Table).replace(/ /g, '_');
+            tableName2 = JSON.stringify(Table);
+        }
+    }
+
     const dbAll = SQLite.openDatabase("AllCheckLists.db");
     const dbActive = SQLite.openDatabase("ActiveCheckLists.db");
 
-    
+    console.log('tablName:' + tableName);
+    console.log('tableName2: ' + tableName2);
+
+    if (tableName === null) {
+
+    }
+
 
     return (
         <View>
             <GlobalHeader text="Activate Checklist" />
             <Text>Activate Checklist</Text>
+            {/* 
             <Text>{tableName}</Text>
             <Text>{tableName2}</Text>
+            */}
             <Button 
                 title="Back"
                 onPress={() => {navigation.goBack()}}
