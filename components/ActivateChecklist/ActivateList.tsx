@@ -19,33 +19,26 @@ class ActivatedChecklist {
 const Activate = ({route, navigation}:any) => {
     let tableName: string | undefined;
     let tableName2: string | undefined;
-    if (route.params != undefined) {
-        const { Table } = route.params;
-        if (Table != undefined) {
-            tableName = JSON.stringify(Table).replace(/ /g, '_');
-            tableName2 = JSON.stringify(Table);
-        }
-    }
-
+    const [active, setActive] = useState<ActivatedChecklist[]>([]);
+    const [chosen, setChosen] = useState<ChosenChecklist[]>([]);
     const dbAll = SQLite.openDatabase("AllCheckLists.db");
     const dbActive = SQLite.openDatabase("ActiveCheckLists.db");
 
-    console.log('tablName:' + tableName);
-    console.log('tableName2: ' + tableName2);
-
-    if (tableName === null) {
-
+    if (route.params != undefined) {
+        const { Table } = route.params;
+        tableName = JSON.stringify(Table).replace(/ /g, '_');
+        tableName2 = JSON.stringify(Table);        
     }
 
+    console.log('tablName:' + tableName);
+    console.log('tableName2: ' + tableName2);
 
     return (
         <View>
             <GlobalHeader text="Activate Checklist" />
             <Text>Activate Checklist</Text>
-            {/* 
             <Text>{tableName}</Text>
             <Text>{tableName2}</Text>
-            */}
             <Button 
                 title="Back"
                 onPress={() => {navigation.goBack()}}
