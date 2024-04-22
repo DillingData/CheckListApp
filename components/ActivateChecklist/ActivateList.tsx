@@ -3,7 +3,6 @@ import { Text, View, StyleSheet, TextInput, Button, Alert, ScrollView, Pressable
 import * as SQLite from 'expo-sqlite';
 import { useState } from "react";
 import GlobalHeader from "../GlobalHeader";
-import { getDefaultLibFileName } from "typescript";
 import { useIsFocused } from "@react-navigation/native";
 
 class ChosenChecklist {
@@ -17,60 +16,65 @@ class ActivatedChecklist {
     public COMPLETED: boolean | undefined;
 }
 
-function CheckIfExists(incomingTable: string | undefined) {
-    const dbActive = SQLite.openDatabase('ActiveCheckLists.db');
-    const [active, setActive] = useState<ActivatedChecklist[]>([]);
-
-    dbActive.transaction(query => {
-        try {
-            query.executeSql('SELECT * FROM ' + incomingTable + '', [], 
-                (_, {rows: {_array} }) => {
-                    setActive(_array);
-                }
-            )
-            console.log(incomingTable);
-        }
-        catch (error) {
-            console.log(error);
-        } 
-    })
-
-    if (active.length != 0) {
-        return true;
-    } else {
-        return false;
-    }
+class TableNameClass {
+    public name: string | undefined;
 }
 
 const Activate = ({route, navigation}:any) => {
-    let tableName: string | undefined;
-    let tableName2: string | undefined;
     const isFocused = useIsFocused();
     const [active, setActive] = useState<ActivatedChecklist[]>([]);
     const [chosen, setChosen] = useState<ChosenChecklist[]>([]);
     const [isLoading, setIsLoading] = useState(true);
-
-    const check = CheckIfExists(tableName);
-
-    if (check === true) {
-        Alert.alert('Checklist already started');
-        //Add button to navigation to go back
-        //navigation.goBack();
-    }
-
     const dbAll = SQLite.openDatabase("AllCheckLists.db");
     const dbActive = SQLite.openDatabase("ActiveCheckLists.db");
+    const type = 'table';
 
-    const activateChecklist = () => {
+    
+    const CheckIfExists = () => {
+        let TempArray: TableNameClass[] = [];
         const { Table } = route.params;
-        tableName = JSON.stringify(Table).replace(/ /g, '_');
-        tableName2 = JSON.stringify(Table);      
+        let incomingTable: string | undefined = JSON.stringify(Table).replace(/ /g, '_');
+        const dbActive = SQLite.openDatabase('ActiveCheckLists.db');
 
+        console.log('CheckIfExists: ' + incomingTable);
+
+        dbActive.transaction(query => {
+            try {
+                query.executeSql('SELECT name FROM sqlite_master WHERE type=\'' + type + '\' AND name <> \'sqlite_sequence\'', [], 
+                    (_, {rows: {_array} }) => {
+                        TempArray = _array;
+                        console.log('TempArray count:' + TempArray.length);
+                        if (TempArray.length > 0) {
+                            Alert.alert('Error', 'This checklist has already been started', [
+                                {
+                                    text: 'Go Back',
+                                    onPress: () => navigation.goBack(),
+                                },
+                            ]);
+                        }
+                    }
+                )
+            }
+            catch (error) {
+                console.log(error);
+            } 
+        })
+    }
+    
+
+    const activateChecklist = () => {   
+        const { Table } = route.params;
+        let tableName: string | undefined = JSON.stringify(Table).replace(/ /g, '_');
+        let tableName2: string | undefined = JSON.stringify(Table);
+
+        CheckIfExists();
+        
         dbAll.transaction(query => {
             try {
                 query.executeSql('SELECT * FROM ' + tableName + '', [],
                     (_, {rows: { _array } }) => {
                         setChosen(_array);
+
                     }
                 ),
                 (_: any, error: any) => {
@@ -82,6 +86,7 @@ const Activate = ({route, navigation}:any) => {
             }
         });
 
+        /*
         dbActive.transaction(query => {
             try {
                 query.executeSql('CREATE TABLE IF NOT EXISTS ' + tableName + '(ID INTEGER PRIMARY KEY AUTOINCREMENT, TASK TEXT, COMPLETED INT)');
@@ -89,7 +94,8 @@ const Activate = ({route, navigation}:any) => {
             catch (error) {
                 console.log(error);
             }
-
+            
+            
             for (let counter = 0; counter < chosen.length; counter++) {
                 try {
                     query.executeSql('INSERT INTO') 
@@ -98,14 +104,13 @@ const Activate = ({route, navigation}:any) => {
                 }
             }
         })
+        */
+        setIsLoading(false);
     }
 
     const loadActivatedChecklist = () => {
 
     }
-
-    console.log('tablName:' + tableName);
-    console.log('tableName2: ' + tableName2);
 
     useEffect(() => {
         if (isFocused) {
@@ -115,37 +120,37 @@ const Activate = ({route, navigation}:any) => {
                 loadActivatedChecklist();
             }
             
-            console.log(chosen.length);
-            console.log(active.length);
+            //console.log(chosen.length);
+            //console.log(active.length);
         }
     }, [isFocused])
 
     if (isLoading == true) {
         return(
             <View>
+                <GlobalHeader text="Activate Checklist" />
                 <Text>Loading...</Text>
             </View>
         )
     }
-
-    return (
-        <View>
-            <GlobalHeader text="Activate Checklist" />
-            <Text>Activate Checklist</Text>
-            <Text>{tableName}</Text>
-            <Text>{tableName2}</Text>
-            <Button 
-                title="Back"
-                onPress={() => {navigation.goBack()}}
-            />
-
-            {chosen.map((chosen) => (
-                <View key={chosen.ID}>
-                    <Text>{chosen.TASK}</Text>
-                </View>
-            ))}
-        </View>
-    )
+    else {
+        return (
+            <View>
+                <GlobalHeader text="Activate Checklist" />
+                <Text>Activate Checklist</Text>
+                <Button 
+                    title="Back"
+                    onPress={() => {navigation.goBack()}}
+                />
+    
+                {chosen.map((chosen) => (
+                    <View key={chosen.ID}>
+                        <Text>{chosen.TASK}</Text>
+                    </View>
+                ))}
+            </View>
+        )
+    }
 }
 
 export default Activate;
