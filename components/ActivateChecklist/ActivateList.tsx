@@ -130,9 +130,6 @@ const Activate = ({route, navigation}:any) => {
             } else {
                 loadActivatedChecklist();
             }
-            
-            //console.log(chosen.length);
-            //console.log(active.length);
         }
     }, [isFocused])
 
