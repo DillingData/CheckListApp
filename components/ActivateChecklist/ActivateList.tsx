@@ -1,9 +1,10 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Text, View, StyleSheet, TextInput, Button, Alert, ScrollView, Pressable } from "react-native";
 import * as SQLite from 'expo-sqlite';
 import { useState } from "react";
 import GlobalHeader from "../GlobalHeader";
 import { getDefaultLibFileName } from "typescript";
+import { useIsFocused } from "@react-navigation/native";
 
 class ChosenChecklist {
     public ID: number | undefined;
@@ -27,13 +28,14 @@ function CheckIfExists(incomingTable: string | undefined) {
                     setActive(_array);
                 }
             )
+            console.log(incomingTable);
         }
         catch (error) {
             console.log(error);
         } 
     })
 
-    if (active.length == 0) {
+    if (active.length != 0) {
         return true;
     } else {
         return false;
@@ -43,8 +45,10 @@ function CheckIfExists(incomingTable: string | undefined) {
 const Activate = ({route, navigation}:any) => {
     let tableName: string | undefined;
     let tableName2: string | undefined;
+    const isFocused = useIsFocused();
     const [active, setActive] = useState<ActivatedChecklist[]>([]);
     const [chosen, setChosen] = useState<ChosenChecklist[]>([]);
+    const [isLoading, setIsLoading] = useState(true);
 
     const check = CheckIfExists(tableName);
 
@@ -57,8 +61,7 @@ const Activate = ({route, navigation}:any) => {
     const dbAll = SQLite.openDatabase("AllCheckLists.db");
     const dbActive = SQLite.openDatabase("ActiveCheckLists.db");
 
-    /*
-    if (route.params != undefined) {
+    const activateChecklist = () => {
         const { Table } = route.params;
         tableName = JSON.stringify(Table).replace(/ /g, '_');
         tableName2 = JSON.stringify(Table);      
@@ -96,10 +99,34 @@ const Activate = ({route, navigation}:any) => {
             }
         })
     }
-    */
+
+    const loadActivatedChecklist = () => {
+
+    }
 
     console.log('tablName:' + tableName);
     console.log('tableName2: ' + tableName2);
+
+    useEffect(() => {
+        if (isFocused) {
+            if (route.params != undefined) {
+                activateChecklist();
+            } else {
+                loadActivatedChecklist();
+            }
+            
+            console.log(chosen.length);
+            console.log(active.length);
+        }
+    }, [isFocused])
+
+    if (isLoading == true) {
+        return(
+            <View>
+                <Text>Loading...</Text>
+            </View>
+        )
+    }
 
     return (
         <View>

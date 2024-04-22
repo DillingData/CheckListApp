@@ -90,6 +90,8 @@ const MainPage = ({navigation}:any) => {
     useEffect(() => {
         if (isFocused) {
             loadData();
+            console.log(all.length);
+            console.log(active.length);
         }
     }, [isFocused])
 
@@ -148,59 +150,69 @@ const MainPage = ({navigation}:any) => {
             </View>
         )
     } else if (active.length != 0 && all.length == 0) {
-        <View>
-            <View style={mainPageStyles.Element}>
+        return(
+            <View>
                 <View>
-                    <Text style={mainPageStyles.HeaderText2}>Active Checklists</Text>
+                    <GlobalHeader text="Welcome" />
                 </View>
-                <ScrollView>
-                    {active.map((name) => (
-                        <View key={name.name} style={mainPageStyles.Row}>
-                            <TouchableOpacity onPress={() => {navigation.navigate('Edit')}}>
-                                <Text style={mainPageStyles.ActiveText}>{name.name}</Text>
-                            </TouchableOpacity>
-                        </View>
-                    ))}
-                </ScrollView>
-            </View>
+                <View style={mainPageStyles.Element}>
+                    <View>
+                        <Text style={mainPageStyles.HeaderText2}>Active Checklists</Text>
+                    </View>
+                    <ScrollView>
+                        {active.map((name) => (
+                            <View key={name.name} style={mainPageStyles.Row}>
+                                <TouchableOpacity onPress={() => {navigation.navigate('Edit')}}>
+                                    <Text style={mainPageStyles.ActiveText}>{name.name}</Text>
+                                </TouchableOpacity>
+                            </View>
+                        ))}
+                    </ScrollView>
+                </View>
 
-            <View style={mainPageStyles.Element}>
-                <Text style={mainPageStyles.HeaderText}>All Checklists</Text>
-                <Text>No Checklists</Text>
+                <View style={mainPageStyles.Element}>
+                    <Text style={mainPageStyles.HeaderText}>All Checklists</Text>
+                    <Text>No Checklists</Text>
+                </View>
             </View>
-        </View>
+        )
     } else if (active.length != 0 && all.length != 0) {
-        <View>
-            <View style={mainPageStyles.Element}>
+        return(
+            <View>
                 <View>
-                    <Text style={mainPageStyles.HeaderText2}>Active Checklists</Text>
+                    <GlobalHeader text="Welcome" />
                 </View>
-                <ScrollView>
-                    {active.map((name) => (
-                        <View key={name.name} style={mainPageStyles.Row}>
-                            <TouchableOpacity onPress={() => {navigation.navigate('Edit')}}>
-                                <Text style={mainPageStyles.ActiveText}>{name.name}</Text>
-                            </TouchableOpacity>
-                        </View>
-                    ))}
-                </ScrollView>
-            </View>
-            
-            <View style={mainPageStyles.Element}>
-                <View>
-                    <Text style={mainPageStyles.HeaderText2}>All Checklists</Text>
+                <View style={mainPageStyles.Element}>
+                    <View>
+                        <Text style={mainPageStyles.HeaderText2}>Active Checklists</Text>
+                    </View>
+                    <ScrollView>
+                        {active.map((name) => (
+                            <View key={name.name} style={mainPageStyles.Row}>
+                                <TouchableOpacity onPress={() => {navigation.navigate('Edit')}}>
+                                    <Text style={mainPageStyles.ActiveText}>{name.name}</Text>
+                                </TouchableOpacity>
+                            </View>
+                        ))}
+                    </ScrollView>
                 </View>
-                <ScrollView>
-                    {all.map((name) => (
-                        <View key={name.name} style={mainPageStyles.Row}>
-                            <TouchableOpacity onPress={() => {navigation.navigate('Edit', { Table: name.name })}}>
-                                <Text style={mainPageStyles.ActiveText}>{name.name}</Text>
-                            </TouchableOpacity>
-                        </View>
-                    ))}
-                </ScrollView>
+                
+                <View style={mainPageStyles.Element}>
+                    <View>
+                        <Text style={mainPageStyles.HeaderText2}>All Checklists</Text>
+                    </View>
+                    <ScrollView>
+                        {all.map((name) => (
+                            <View key={name.name} style={mainPageStyles.Row}>
+                                <TouchableOpacity onPress={() => {navigation.navigate('Edit', { Table: name.name })}}>
+                                    <Text style={mainPageStyles.ActiveText}>{name.name}</Text>
+                                </TouchableOpacity>
+                            </View>
+                        ))}
+                    </ScrollView>
+                </View>
             </View>
-        </View>
+        )
     }
 }
 
