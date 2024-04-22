@@ -29,28 +29,31 @@ const Activate = ({route, navigation}:any) => {
     const dbActive = SQLite.openDatabase("ActiveCheckLists.db");
     const type = 'table';
 
-    
+    //Checks if the checklist to activate has already been activated
     const CheckIfExists = () => {
         let TempArray: TableNameClass[] = [];
         const { Table } = route.params;
-        let incomingTable: string | undefined = JSON.stringify(Table).replace(/ /g, '_');
+        let incomingTable: string | undefined = JSON.stringify(Table).replace(/ /g, '_').replaceAll('"', '');
         const dbActive = SQLite.openDatabase('ActiveCheckLists.db');
-
-        console.log('CheckIfExists: ' + incomingTable);
 
         dbActive.transaction(query => {
             try {
                 query.executeSql('SELECT name FROM sqlite_master WHERE type=\'' + type + '\' AND name <> \'sqlite_sequence\'', [], 
                     (_, {rows: {_array} }) => {
                         TempArray = _array;
-                        console.log('TempArray count:' + TempArray.length);
-                        if (TempArray.length > 0) {
-                            Alert.alert('Error', 'This checklist has already been started', [
-                                {
-                                    text: 'Go Back',
-                                    onPress: () => navigation.goBack(),
-                                },
-                            ]);
+
+                        for (let counter = 0; counter < TempArray.length; counter++) {
+                            console.log('TempArrayName: ' + TempArray[counter].name);
+                            console.log('Value to check against: ' + incomingTable);
+
+                            if (TempArray[counter].name === incomingTable) {
+                                Alert.alert('Error', 'This checklist has already been started', [
+                                    {
+                                        text: 'Go Back',
+                                        onPress: () => navigation.goBack(),
+                                    },
+                                ]);
+                            }
                         }
                     }
                 )
