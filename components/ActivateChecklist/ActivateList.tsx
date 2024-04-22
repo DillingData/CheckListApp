@@ -62,7 +62,7 @@ const Activate = ({route, navigation}:any) => {
                                 },
                             ]);
                         } else {
-                            //Run the activate checklist function here
+                            activateChecklist();
                         }
                     }
                 )
@@ -79,8 +79,6 @@ const Activate = ({route, navigation}:any) => {
         let tableName: string | undefined = JSON.stringify(Table).replace(/ /g, '_');
         let tableName2: string | undefined = JSON.stringify(Table);
 
-        CheckIfExists();
-        
         dbAll.transaction(query => {
             try {
                 query.executeSql('SELECT * FROM ' + tableName + '', [],
@@ -128,7 +126,7 @@ const Activate = ({route, navigation}:any) => {
     useEffect(() => {
         if (isFocused) {
             if (route.params != undefined) {
-                activateChecklist();
+                CheckIfExists();
             } else {
                 loadActivatedChecklist();
             }
