@@ -42,18 +42,27 @@ const Activate = ({route, navigation}:any) => {
                     (_, {rows: {_array} }) => {
                         TempArray = _array;
 
+                        let checkBool = 'false';
+
                         for (let counter = 0; counter < TempArray.length; counter++) {
                             console.log('TempArrayName: ' + TempArray[counter].name);
                             console.log('Value to check against: ' + incomingTable);
 
                             if (TempArray[counter].name === incomingTable) {
-                                Alert.alert('Error', 'This checklist has already been started', [
-                                    {
-                                        text: 'Go Back',
-                                        onPress: () => navigation.goBack(),
-                                    },
-                                ]);
+                                checkBool = 'true';
+                                break;
                             }
+                        }
+
+                        if (checkBool === 'true') {
+                            Alert.alert('Error', 'This checklist has already been started', [
+                                {
+                                    text: 'Go Back',
+                                    onPress: () => navigation.goBack(),
+                                },
+                            ]);
+                        } else {
+                            //Run the activate checklist function here
                         }
                     }
                 )
@@ -89,6 +98,7 @@ const Activate = ({route, navigation}:any) => {
             }
         });
 
+        console.log('Does it reach here?');
         /*
         dbActive.transaction(query => {
             try {
