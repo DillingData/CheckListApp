@@ -43,6 +43,17 @@ const Activate = ({route, navigation}:any) => {
             catch (error) {
                 console.log(error);
             }
+        });
+
+        dbActive.transaction(query => {
+            try {
+                query.executeSql('CREATE TALBE IF NOT EXISTS ' + tableName + '(ID INTEGER PRIMARY KEY AUTOINCREMENT, TASK TEXT, COMPLETED INT)');
+            }
+            catch (error) {
+                console.log(error);
+            }
+
+            
         })
     }
 
