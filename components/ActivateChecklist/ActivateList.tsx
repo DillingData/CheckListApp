@@ -27,7 +27,23 @@ const Activate = ({route, navigation}:any) => {
     if (route.params != undefined) {
         const { Table } = route.params;
         tableName = JSON.stringify(Table).replace(/ /g, '_');
-        tableName2 = JSON.stringify(Table);        
+        tableName2 = JSON.stringify(Table);      
+
+        dbAll.transaction(query => {
+            try {
+                query.executeSql('SELECT * FROM ' + tableName + '', [],
+                    (_, {rows: { _array } }) => {
+                        setChosen(_array);
+                    }
+                ),
+                (_: any, error: any) => {
+                    console.log(error);
+                }
+            }
+            catch (error) {
+                console.log(error);
+            }
+        })
     }
 
     console.log('tablName:' + tableName);
@@ -43,6 +59,12 @@ const Activate = ({route, navigation}:any) => {
                 title="Back"
                 onPress={() => {navigation.goBack()}}
             />
+
+            {chosen.map((chosen) => (
+                <View key={chosen.ID}>
+                    <Text>{chosen.TASK}</Text>
+                </View>
+            ))}
         </View>
     )
 }
