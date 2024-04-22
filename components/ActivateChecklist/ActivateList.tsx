@@ -45,9 +45,6 @@ const Activate = ({route, navigation}:any) => {
                         let checkBool = 'false';
 
                         for (let counter = 0; counter < TempArray.length; counter++) {
-                            console.log('TempArrayName: ' + TempArray[counter].name);
-                            console.log('Value to check against: ' + incomingTable);
-
                             if (TempArray[counter].name === incomingTable) {
                                 checkBool = 'true';
                                 break;
@@ -95,8 +92,7 @@ const Activate = ({route, navigation}:any) => {
                 console.log(error);
             }
         });
-
-        console.log('Does it reach here?');
+        
         /*
         dbActive.transaction(query => {
             try {

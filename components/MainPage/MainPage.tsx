@@ -90,8 +90,6 @@ const MainPage = ({navigation}:any) => {
     useEffect(() => {
         if (isFocused) {
             loadData();
-            console.log(all.length);
-            console.log(active.length);
         }
     }, [isFocused])
 
