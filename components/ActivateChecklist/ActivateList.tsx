@@ -114,7 +114,21 @@ const Activate = ({route, navigation}:any) => {
     }
 
     const loadActivatedChecklist = () => {
+        const { Table } = route.params;
+        let tableName: string | undefined = JSON.stringify(Table).replace(/ /g, '_');
 
+        dbActive.transaction(query => {
+            try {
+                query.executeSql('SELECT * FROM ' + tableName + '', [],
+                    (_, {rows: { _array } }) => {
+                        setActive(_array);
+                    }
+                )
+            }
+            catch (error) {
+                console.log(error);
+            }
+        })
 
         setIsLoading(false);
     }
@@ -147,9 +161,10 @@ const Activate = ({route, navigation}:any) => {
                     onPress={() => {navigation.goBack()}}
                 />
     
-                {chosen.map((chosen) => (
-                    <View key={chosen.ID}>
-                        <Text>{chosen.TASK}</Text>
+                {active.map((active) => (
+                    <View key={active.ID}>
+                        <Text>{active.TASK}</Text>
+                        <Text>{active.COMPLETED}</Text>
                     </View>
                 ))}
             </View>
