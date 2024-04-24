@@ -93,7 +93,6 @@ const Activate = ({route, navigation}:any) => {
             }
         });
         
-        /*
         dbActive.transaction(query => {
             try {
                 query.executeSql('CREATE TABLE IF NOT EXISTS ' + tableName + '(ID INTEGER PRIMARY KEY AUTOINCREMENT, TASK TEXT, COMPLETED INT)');
@@ -101,22 +100,23 @@ const Activate = ({route, navigation}:any) => {
             catch (error) {
                 console.log(error);
             }
-            
-            
+
             for (let counter = 0; counter < chosen.length; counter++) {
                 try {
-                    query.executeSql('INSERT INTO') 
+                    query.executeSql('INSERT INTO ' + tableName + ' (TASK, COMPLETED) VALUES (\'' + chosen[counter].TASK + '\', 0)') 
                 } catch(error) {
                     console.log(error)
                 }
             }
         })
-        */
-        setIsLoading(false);
+        
+        loadActivatedChecklist();
     }
 
     const loadActivatedChecklist = () => {
 
+
+        setIsLoading(false);
     }
 
     useEffect(() => {
