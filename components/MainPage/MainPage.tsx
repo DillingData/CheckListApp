@@ -138,7 +138,7 @@ const MainPage = ({navigation}:any) => {
                     <ScrollView>
                         {all.map((name) => (
                             <View key={name.name} style={mainPageStyles.Row}>
-                                <TouchableOpacity onPress={() => {navigation.navigate('Edit', { Table: name.name })}}>
+                                <TouchableOpacity onPress={() => {navigation.navigate('Edit', { Table: name.name, Test: 'new' })}}>
                                     <Text style={mainPageStyles.ActiveText}>{name.name}</Text>
                                 </TouchableOpacity>
                             </View>
@@ -187,7 +187,7 @@ const MainPage = ({navigation}:any) => {
                     <ScrollView>
                         {active.map((name) => (
                             <View key={name.name} style={mainPageStyles.Row}>
-                                <TouchableOpacity onPress={() => {navigation.navigate('Edit')}}>
+                                <TouchableOpacity onPress={() => {navigation.navigate('Edit',  { Table: name.name })}}>
                                     <Text style={mainPageStyles.ActiveText}>{name.name}</Text>
                                 </TouchableOpacity>
                             </View>
@@ -202,7 +202,7 @@ const MainPage = ({navigation}:any) => {
                     <ScrollView>
                         {all.map((name) => (
                             <View key={name.name} style={mainPageStyles.Row}>
-                                <TouchableOpacity onPress={() => {navigation.navigate('Edit', { Table: name.name })}}>
+                                <TouchableOpacity onPress={() => {navigation.navigate('Edit', { Table: name.name, Test: 'new' })}}>
                                     <Text style={mainPageStyles.ActiveText}>{name.name}</Text>
                                 </TouchableOpacity>
                             </View>

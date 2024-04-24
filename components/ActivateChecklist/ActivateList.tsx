@@ -81,7 +81,6 @@ const Activate = ({route, navigation}:any) => {
                 query.executeSql('SELECT * FROM ' + tableName + '', [],
                     (_, {rows: { _array } }) => {
                         setChosen(_array);
-
                     }
                 ),
                 (_: any, error: any) => {
@@ -90,6 +89,11 @@ const Activate = ({route, navigation}:any) => {
             }
             catch (error) {
                 console.log(error);
+            }
+
+            console.log('Chosen list counter: ' + chosen.length);
+            for (let counter = 0; counter < chosen.length; counter++) {
+                console.log('Task: ' + chosen[counter].TASK + '  at index: ' + counter)
             }
         });
         
@@ -135,7 +139,9 @@ const Activate = ({route, navigation}:any) => {
 
     useEffect(() => {
         if (isFocused) {
-            if (route.params != undefined) {
+            const { Test } = route.params;
+            console.log('Test from useEffect: ' + Test);
+            if (Test === 'new') {
                 CheckIfExists();
             } else {
                 loadActivatedChecklist();
