@@ -47,6 +47,14 @@ const MainPage = ({navigation}:any) => {
     let TempArray: TableNameClass[] = [];
 
     const loadData = () => {
+        //Used for debug to remove activated checklists until delete function has been created
+        //dbActive.transaction(query => {
+            //query.executeSql('DROP TABLE Test_Without_Spaces');
+            //query.executeSql('DROP TABLE Test_2_Without');
+            //query.executeSql('DROP TABLE Test_med_mellemrum');
+            //query.executeSql('DROP TABLE Geninstaller Computer');
+        //})
+        //console.log('deleted?')
         dbActive.transaction(query => {
             try {
                 query.executeSql('SELECT name FROM sqlite_master WHERE type=\'' + type + '\' AND name <> \'sqlite_sequence\'', [],

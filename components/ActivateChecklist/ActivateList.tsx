@@ -27,6 +27,7 @@ const Activate = ({route, navigation}:any) => {
     const [isLoading, setIsLoading] = useState(true);
     const dbAll = SQLite.openDatabase("AllCheckLists.db");
     const dbActive = SQLite.openDatabase("ActiveCheckLists.db");
+    //const dbActive = SQLite.openDatabase("AllCheckLists.db");
     const type = 'table';
 
     //Checks if the checklist to activate has already been activated
@@ -59,7 +60,7 @@ const Activate = ({route, navigation}:any) => {
                                 },
                             ]);
                         } else {
-                            activateChecklist();
+                            activateChecklist(Table);
                         }
                     }
                 )
@@ -69,52 +70,53 @@ const Activate = ({route, navigation}:any) => {
             } 
         })
     }
-    
 
-    const activateChecklist = () => {   
-        const { Table } = route.params;
+    const activateChecklist = (Table: any) => {    
         let tableName: string | undefined = JSON.stringify(Table).replace(/ /g, '_');
         let tableName2: string | undefined = JSON.stringify(Table);
+
+        console.log(tableName);
 
         dbAll.transaction(query => {
             try {
                 query.executeSql('SELECT * FROM ' + tableName + '', [],
                     (_, {rows: { _array } }) => {
-                        setChosen(_array);
+                        //setChosen(oldArray => [..._array]);
+                        setChosen(oldArray => {
+                            dbActive.transaction(innerQuery => {
+                                try {
+                                    innerQuery.executeSql('CREATE TABLE IF NOT EXISTS ' + tableName + '(ID INTEGER PRIMARY KEY AUTOINCREMENT, TASK TEXT, COMPLETED INT)');
+                                }
+                                catch (error) {
+                                    console.log(error);
+                                }
+                    
+                                for (let counter = 0; counter < _array.length; counter++) {
+                                    try {
+                                        innerQuery.executeSql('INSERT INTO ' + tableName + ' (TASK, COMPLETED) VALUES (\'' + _array[counter].TASK + '\', 0)') 
+                                    } catch(error) {
+                                        console.log(error)
+                                    }
+                                }
+                            })
+                            return[..._array]
+                        })
+                        loadActivatedChecklist();
+                    },
+                    (_, error): boolean | any => {
+                        console.log(error);
                     }
-                ),
-                (_: any, error: any) => {
-                    console.log(error);
-                }
+                )
             }
             catch (error) {
                 console.log(error);
-            }
-
-            console.log('Chosen list counter: ' + chosen.length);
-            for (let counter = 0; counter < chosen.length; counter++) {
-                console.log('Task: ' + chosen[counter].TASK + '  at index: ' + counter)
-            }
-        });
-        
-        dbActive.transaction(query => {
-            try {
-                query.executeSql('CREATE TABLE IF NOT EXISTS ' + tableName + '(ID INTEGER PRIMARY KEY AUTOINCREMENT, TASK TEXT, COMPLETED INT)');
-            }
-            catch (error) {
-                console.log(error);
-            }
-
-            for (let counter = 0; counter < chosen.length; counter++) {
-                try {
-                    query.executeSql('INSERT INTO ' + tableName + ' (TASK, COMPLETED) VALUES (\'' + chosen[counter].TASK + '\', 0)') 
-                } catch(error) {
-                    console.log(error)
-                }
             }
         })
         
-        loadActivatedChecklist();
+
+        console.log('loaded from activate: ' + chosen.length);
+        
+        
     }
 
     const loadActivatedChecklist = () => {
@@ -126,6 +128,11 @@ const Activate = ({route, navigation}:any) => {
                 query.executeSql('SELECT * FROM ' + tableName + '', [],
                     (_, {rows: { _array } }) => {
                         setActive(_array);
+                        console.log('loaded from end of loadActive: ' + active.length);
+                        setIsLoading(false);
+                    },
+                    (_, error): boolean | any => {
+                        console.log(error);
                     }
                 )
             }
@@ -133,16 +140,16 @@ const Activate = ({route, navigation}:any) => {
                 console.log(error);
             }
         })
-
-        setIsLoading(false);
     }
 
     useEffect(() => {
         if (isFocused) {
             const { Test } = route.params;
+            const { Table } = route.params;
             console.log('Test from useEffect: ' + Test);
             if (Test === 'new') {
-                CheckIfExists();
+                //CheckIfExists();
+                activateChecklist(Table);
             } else {
                 loadActivatedChecklist();
             }

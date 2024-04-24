@@ -50,55 +50,50 @@ const ShowActiveCheckLists = ({TableNameClass}:any) => {
     const [activeChecklist, setActive] = useState<ActiveChecklist[]>([]);
     const isFocused = useIsFocused();
 
-    
-        
-    let dbVersion = '';
-    let headLine = '';
-
-    /*
-    if (props.WhichDB === 'active') {
-        dbVersion = 'ActiveCheckLists.db';
-        headLine = 'Active Checklists'
-    } else if (props.WhichDB === 'all') {
-        dbVersion = 'AllCheckLists.db';
-        headLine = 'Checklists to start'
-    } 
-    */
-
     const db = SQLite.openDatabase('ActiveCheckLists.db');
     //const db = SQLite.openDatabase(dbVersion);
     let TempArray: TableNameClass[] = [];
 
-    db.transaction(query => {
-        try {
-            query.executeSql('SELECT name FROM sqlite_master WHERE type=\'' + type + '\' AND name <> \'sqlite_sequence\'', [],
-            (_, { rows: { _array } }) => {
-                TempArray = _array;
-                for (let counter:number = 0; counter < TempArray.length; counter++) {
-                    TempArray[counter].name = TempArray[counter].name?.replaceAll('_', ' ');
-                }
-                setNames(TempArray);
-                console.log('Test')
-                setIsLoading(false);
-                console.log(names.length);
-            },
-            (_, error): boolean | any => {
-                console.log(error + 'Where i get the tables'),
-                setIsLoading(false);
-            }
-        );
-        } catch (error) {
-            console.log(error);
-        }
-    })
+    const loadData = () => {
+        db.transaction(query => {
+            query.executeSql('DROP TABLE Test_Without_Spaces');
+            query.executeSql('DROP TABLE Test_2_Without');
+            query.executeSql('DROP TABLE Test_med_mellemrum');
+            query.executeSql('DROP TABLE Geninstaller Computer');
+        })
+        console.log('deleted?')
 
-    {/* 
+        db.transaction(query => {
+            try {
+                query.executeSql('SELECT name FROM sqlite_master WHERE type=\'' + type + '\' AND name <> \'sqlite_sequence\'', [],
+                (_, { rows: { _array } }) => {
+                    TempArray = _array;
+                    for (let counter:number = 0; counter < TempArray.length; counter++) {
+                        TempArray[counter].name = TempArray[counter].name?.replaceAll('_', ' ');
+                    }
+                    setNames(TempArray);
+                    console.log('Test')
+                    setIsLoading(false);
+                    console.log(names.length);
+                },
+                (_, error): boolean | any => {
+                    console.log(error + 'Where i get the tables'),
+                    setIsLoading(false);
+                }
+            );
+            } catch (error) {
+                console.log(error);
+            }
+        })
+}
+
+     
     useEffect(() => {
         if (isFocused) {
             loadData();
         }
     }, [isFocused])
-
+    {/*
     if (isLoading == true) {
         return (
             <View>
