@@ -53,7 +53,7 @@ const Activate = ({route, navigation}:any) => {
                         }
 
                         if (checkBool === 'true') {
-                            Alert.alert('Error', 'This checklist has already been started', [
+                            Alert.alert('Error', 'This checklist has already been started - You need to finish the one you started or delete it to add it again', [
                                 {
                                     text: 'Go Back',
                                     onPress: () => navigation.goBack(),
@@ -127,9 +127,13 @@ const Activate = ({route, navigation}:any) => {
             try {
                 query.executeSql('SELECT * FROM ' + tableName + '', [],
                     (_, {rows: { _array } }) => {
-                        setActive(_array);
+                        setActive(oldArray => {
+                            setIsLoading(false);
+                            console.log(_array.length);
+                            return [..._array]
+                        });
                         console.log('loaded from end of loadActive: ' + active.length);
-                        setIsLoading(false);
+                        //setIsLoading(false);
                     },
                     (_, error): boolean | any => {
                         console.log(error);
@@ -148,8 +152,8 @@ const Activate = ({route, navigation}:any) => {
             const { Table } = route.params;
             console.log('Test from useEffect: ' + Test);
             if (Test === 'new') {
-                //CheckIfExists();
-                activateChecklist(Table);
+                CheckIfExists();
+                //activateChecklist(Table);
             } else {
                 loadActivatedChecklist();
             }
@@ -175,9 +179,9 @@ const Activate = ({route, navigation}:any) => {
                 />
                 <ScrollView>
                     {active.map((active) => (
-                        <View key={active.ID}>
-                            <Text>{active.TASK}</Text>
-                            <Text>{active.COMPLETED}</Text>
+                        <View key={active.ID} style={ActivateStyles.AddedTasks}>
+                            <Text style={ActivateStyles.Text}>{active.TASK}</Text>
+                            <Text style={ActivateStyles.Text}>{active.COMPLETED}</Text>
                         </View>
                     ))}
                 </ScrollView>
