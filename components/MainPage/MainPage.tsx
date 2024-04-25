@@ -77,7 +77,7 @@ const MainPage = ({navigation}:any) => {
         dbAll.transaction(query => {
             try {
                 query.executeSql('SELECT name FROM sqlite_master WHERE type=\'' + type + '\' AND name <> \'sqlite_sequence\'', [],
-                (_, { rows: { _array } }) => {
+                (_,     { rows: { _array } }) => {
                     TempArray = _array;
                     for (let counter:number = 0; counter < TempArray.length; counter++) {
                         TempArray[counter].name = TempArray[counter].name?.replaceAll('_', ' ');
@@ -115,12 +115,12 @@ const MainPage = ({navigation}:any) => {
                 </View>
 
                 <View style={mainPageStyles.Element}>
-                    <Text style={mainPageStyles.HeaderText}>Active Checklists</Text>
+                    <Text style={mainPageStyles.HeaderText2}>Active Checklists</Text>
                     <Text>No active Checklists</Text>
                 </View>
 
                 <View style={mainPageStyles.Element}>
-                    <Text style={mainPageStyles.HeaderText}>All Checklists</Text>
+                    <Text style={mainPageStyles.HeaderText2}>All Checklists</Text>
                     <Text>No Checklists</Text>
                 </View>
             </View>
@@ -177,7 +177,7 @@ const MainPage = ({navigation}:any) => {
                 </View>
 
                 <View style={mainPageStyles.Element}>
-                    <Text style={mainPageStyles.HeaderText}>All Checklists</Text>
+                    <Text style={mainPageStyles.HeaderText2}>All Checklists</Text>
                     <Text>No Checklists</Text>
                 </View>
             </View>
@@ -249,6 +249,8 @@ const mainPageStyles = StyleSheet.create({
         color: '#336DDD',
         fontWeight: '800',
         textAlign: 'center',
+        marginBottom: 7,
+        marginTop: 7,
     },
 
     ActiveText: {
