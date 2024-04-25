@@ -173,16 +173,81 @@ const Activate = ({route, navigation}:any) => {
                     title="Back"
                     onPress={() => {navigation.goBack()}}
                 />
-    
-                {active.map((active) => (
-                    <View key={active.ID}>
-                        <Text>{active.TASK}</Text>
-                        <Text>{active.COMPLETED}</Text>
-                    </View>
-                ))}
+                <ScrollView>
+                    {active.map((active) => (
+                        <View key={active.ID}>
+                            <Text>{active.TASK}</Text>
+                            <Text>{active.COMPLETED}</Text>
+                        </View>
+                    ))}
+                </ScrollView>
+
             </View>
         )
     }
 }
+
+const ActivateStyles = StyleSheet.create({
+    Parent: {
+        flex: 1, 
+    },
+    SubHeader: {
+        textAlign: 'center',
+        fontWeight: '500',
+        color: '#336DDD',
+        fontSize: 19,
+        marginBottom: 10,
+        marginTop: 15,  
+    },
+    TextInput: {
+        backgroundColor: '#FFFFFF',
+        color: '#336DDD',
+        borderRadius: 15,
+        height: 40,
+        width: '90%',
+        marginLeft: '5%',
+        marginRight: '5%',
+        textAlign: 'center',
+    },
+    TextInputRow: {
+        backgroundColor: '#FFFFFF',
+        borderRadius: 15,
+        color: '#336DDD',
+        height: 40,
+        width: '70%',
+        marginLeft: '5%',
+        marginRight: '5%',
+        textAlign: 'center',
+    },
+    TaskRow: {
+        flexDirection: 'row',
+        marginBottom: 15,
+    },
+    AddedTasks: {
+        flexDirection: 'row',
+        backgroundColor: '#FFFFFF',
+        borderRadius: 15,
+        height: 40,
+        width: '90%',
+        marginLeft: '5%',
+        marginRight: '5%',
+        marginTop: 10,
+        textAlign: 'center',
+    },
+    Text: {
+        color: '#336DDD',
+        fontSize: 18,
+        marginBottom: 8,
+        marginTop: 8,
+        marginLeft: 15, 
+        width: '82%',
+    },
+    SaveButton: {
+        marginTop: 10, 
+    },
+    DeleteButton: {
+        marginTop: 5,   
+    }
+}) 
 
 export default Activate;
