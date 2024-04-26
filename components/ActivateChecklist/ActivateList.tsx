@@ -20,6 +20,10 @@ class TableNameClass {
     public name: string | undefined;
 }
 
+function TerminateChecklist(tableName:string) {
+    
+}
+
 const Activate = ({route, navigation}:any) => {
     const isFocused = useIsFocused();
     const [active, setActive] = useState<ActivatedChecklist[]>([]);
@@ -185,6 +189,12 @@ const Activate = ({route, navigation}:any) => {
                         </View>
                     ))}
                 </ScrollView>
+                <View>
+                    <Button 
+                        title="Terminate Checklist"
+                        onPress={() => {}}
+                    />
+                </View>
 
             </View>
         )
