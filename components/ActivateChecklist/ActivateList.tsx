@@ -20,9 +20,7 @@ class TableNameClass {
     public name: string | undefined;
 }
 
-function TerminateChecklist(tableName:string) {
-    
-}
+
 
 const Activate = ({route, navigation}:any) => {
     const isFocused = useIsFocused();
@@ -33,11 +31,12 @@ const Activate = ({route, navigation}:any) => {
     const dbActive = SQLite.openDatabase("ActiveCheckLists.db");
     //const dbActive = SQLite.openDatabase("AllCheckLists.db");
     const type = 'table';
+    const { Table } = route.params;
 
     //Checks if the checklist to activate has already been activated
     const CheckIfExists = () => {
         let TempArray: TableNameClass[] = [];
-        const { Table } = route.params;
+        //const { Table } = route.params;
         let incomingTable: string | undefined = JSON.stringify(Table).replace(/ /g, '_').replaceAll('"', '');
         const dbActive = SQLite.openDatabase('ActiveCheckLists.db');
 
@@ -123,8 +122,40 @@ const Activate = ({route, navigation}:any) => {
         
     }
 
+    const TerminateChecklist = (tableName:string) => {
+        tableName = JSON.stringify(tableName).replace(/ /g, '_');
+
+        Alert.alert('Terminate checklist', 'Are you sure you want to terminate this checklist - this CANNOT be reverted', [
+            {
+                text: 'No',
+            },
+            {
+                text: 'Yes',
+                onPress: () => {
+                    dbActive.transaction(query => {
+                        try {
+                            query.executeSql('DROP TABLE ' + tableName);
+            
+                            Alert.alert('Checklist terminated', 'The checklist has been terminated and you can now start it again', [
+                                {
+                                    text: 'Ok',
+                                    onPress: () => navigation.goBack(),
+                                },
+
+                            ]);
+                        }
+                        catch (error) {
+                            console.log(error);
+                        } 
+                    })
+                },
+
+            },
+        ])
+    }
+
     const loadActivatedChecklist = () => {
-        const { Table } = route.params;
+        //const { Table } = route.params;
         let tableName: string | undefined = JSON.stringify(Table).replace(/ /g, '_');
 
         dbActive.transaction(query => {
@@ -153,7 +184,7 @@ const Activate = ({route, navigation}:any) => {
     useEffect(() => {
         if (isFocused) {
             const { Test } = route.params;
-            const { Table } = route.params;
+            //const { Table } = route.params;
             console.log('Test from useEffect: ' + Test);
             if (Test === 'new') {
                 CheckIfExists();
@@ -177,10 +208,7 @@ const Activate = ({route, navigation}:any) => {
             <View>
                 <GlobalHeader text="Activate Checklist" />
                 <Text>Activate Checklist</Text>
-                <Button 
-                    title="Back"
-                    onPress={() => {navigation.goBack()}}
-                />
+
                 <ScrollView>
                     {active.map((active) => (
                         <View key={active.ID} style={ActivateStyles.AddedTasks}>
@@ -189,10 +217,14 @@ const Activate = ({route, navigation}:any) => {
                         </View>
                     ))}
                 </ScrollView>
-                <View>
+                <View style={ActivateStyles.ButtonRow}>
                     <Button 
-                        title="Terminate Checklist"
-                        onPress={() => {}}
+                        title="Remove Checklist"
+                        onPress={() => {TerminateChecklist(Table)}}
+                    />
+                    <Button 
+                        title="Back"
+                        onPress={() => {navigation.goBack()}}
                     />
                 </View>
 
@@ -261,7 +293,11 @@ const ActivateStyles = StyleSheet.create({
     },
     DeleteButton: {
         marginTop: 5,   
-    }
+    },
+    ButtonRow: {
+        flexDirection: 'row',
+        justifyContent: 'center',
+    },
 }) 
 
 export default Activate;
