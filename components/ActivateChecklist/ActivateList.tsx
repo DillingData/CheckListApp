@@ -78,8 +78,6 @@ const Activate = ({route, navigation}:any) => {
         let tableName: string | undefined = JSON.stringify(Table).replace(/ /g, '_');
         let tableName2: string | undefined = JSON.stringify(Table);
 
-        console.log(tableName);
-
         dbAll.transaction(query => {
             try {
                 query.executeSql('SELECT * FROM ' + tableName + '', [],
@@ -114,12 +112,7 @@ const Activate = ({route, navigation}:any) => {
             catch (error) {
                 console.log(error);
             }
-        })
-        
-
-        console.log('loaded from activate: ' + chosen.length);
-        
-        
+        })    
     }
 
     const TerminateChecklist = (tableName:string) => {
@@ -155,7 +148,6 @@ const Activate = ({route, navigation}:any) => {
     }
 
     const loadActivatedChecklist = () => {
-        //const { Table } = route.params;
         let tableName: string | undefined = JSON.stringify(Table).replace(/ /g, '_');
 
         dbActive.transaction(query => {
@@ -164,11 +156,8 @@ const Activate = ({route, navigation}:any) => {
                     (_, {rows: { _array } }) => {
                         setActive(oldArray => {
                             setIsLoading(false);
-                            console.log(_array.length);
                             return [..._array]
                         });
-                        console.log('loaded from end of loadActive: ' + active.length);
-                        //setIsLoading(false);
                     },
                     (_, error): boolean | any => {
                         console.log(error);
@@ -184,11 +173,8 @@ const Activate = ({route, navigation}:any) => {
     useEffect(() => {
         if (isFocused) {
             const { Test } = route.params;
-            //const { Table } = route.params;
-            console.log('Test from useEffect: ' + Test);
             if (Test === 'new') {
                 CheckIfExists();
-                //activateChecklist(Table);
             } else {
                 loadActivatedChecklist();
             }
