@@ -1,5 +1,6 @@
 import React, { useEffect } from "react";
 import { Text, View, StyleSheet, TextInput, Button, Alert, ScrollView, Pressable } from "react-native";
+import Checkbox from 'expo-checkbox';
 import * as SQLite from 'expo-sqlite';
 import { useState } from "react";
 import GlobalHeader from "../GlobalHeader";
@@ -147,6 +148,29 @@ const Activate = ({route, navigation}:any) => {
         ])
     }
 
+    const updateCompleted = (ID: number | undefined, completed: boolean | undefined) => {
+        let tableName: string | undefined = JSON.stringify(Table).replace(/ /g, '_');
+
+        dbActive.transaction(query => {
+            try {
+                let completedToDB: number = 0;
+                if (completed === false) {
+                    completedToDB = 1;
+                } else {
+                    completedToDB = 0;
+                }
+                query.executeSql('UPDATE ' + tableName + ' SET COMPLETED = ' + completedToDB + ' WHERE ID = ' + ID)
+            }
+            catch(error) {
+                console.log(error);
+            }
+        })
+
+        //Alert.alert('ID: ' + ID + ' updated as completed or not completed')
+
+        loadActivatedChecklist();
+    }
+
     const loadActivatedChecklist = () => {
         let tableName: string | undefined = JSON.stringify(Table).replace(/ /g, '_');
 
@@ -156,9 +180,16 @@ const Activate = ({route, navigation}:any) => {
                     (_, {rows: { _array } }) => {
                         setActive(oldArray => {
                             setIsLoading(false);
-                            return [..._array]
+                            for (let counter = 0; counter < _array.length; counter++){
+                                if (_array[counter].COMPLETED === 0) {
+                                    _array[counter].COMPLETED = false;
+                                } else {
+                                    _array[counter].COMPLETED = true;
+                                }
+                            }
+                            return [..._array];
                         });
-                    },
+                    }, 
                     (_, error): boolean | any => {
                         console.log(error);
                     }
@@ -193,13 +224,16 @@ const Activate = ({route, navigation}:any) => {
         return (
             <View>
                 <GlobalHeader text="Activate Checklist" />
-                <Text>Activate Checklist</Text>
 
                 <ScrollView>
                     {active.map((active) => (
                         <View key={active.ID} style={ActivateStyles.AddedTasks}>
                             <Text style={ActivateStyles.Text}>{active.TASK}</Text>
-                            <Text style={ActivateStyles.Text}>{active.COMPLETED}</Text>
+                            <Checkbox
+                                value={active.COMPLETED}
+                                onValueChange={(newValue) => updateCompleted(active.ID, active.COMPLETED)}
+                                color={active.COMPLETED ? '#4630EB' : undefined}    />
+                            
                         </View>
                     ))}
                 </ScrollView>
