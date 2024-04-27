@@ -237,7 +237,7 @@ const Activate = ({route, navigation}:any) => {
                         </View>
                     ))}
                 </ScrollView>
-                <View style={ActivateStyles.ButtonRow}>
+                <View>
                     <Button 
                         title="Remove Checklist"
                         onPress={() => {TerminateChecklist(Table)}}
