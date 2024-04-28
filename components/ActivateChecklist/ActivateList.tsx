@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { Text, View, StyleSheet, TextInput, Button, Alert, ScrollView, Pressable } from "react-native";
+import { Text, View, StyleSheet, Button, Alert, ScrollView } from "react-native";
 import Checkbox from 'expo-checkbox';
 import * as SQLite from 'expo-sqlite';
 import { useState } from "react";
@@ -20,8 +20,6 @@ class ActivatedChecklist {
 class TableNameClass {
     public name: string | undefined;
 }
-
-
 
 const Activate = ({route, navigation}:any) => {
     const isFocused = useIsFocused();
