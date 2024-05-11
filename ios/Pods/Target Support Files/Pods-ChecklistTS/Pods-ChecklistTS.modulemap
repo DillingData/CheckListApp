@@ -1,0 +1,6 @@
+module Pods_ChecklistTS {
+  umbrella header "Pods-ChecklistTS-umbrella.h"
+
+  export *
+  module * { export * }
+}
