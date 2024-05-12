@@ -56,11 +56,14 @@ const MainPage = ({navigation}:any) => {
         //})
         //console.log('deleted?')
 
+        const tempArrayActive = dbActive.getAllSync('SELECT name FROM sqlite_master WHERE type=\'' + type + '\' AND name <> \'sqlite_sequence\'') as TableNameClass[];
+        console.log(tempArrayActive);
 
-        const tempArray = dbActive.getAllSync('SELECT name FROM sqlite_master WHERE type=\'' + type + '\' AND name <> \'sqlite_sequence\'') as TableNameClass[];
-        console.log(tempArray);
+        for (let counter:number = 0; counter < tempArrayActive.length; counter++) {
+            tempArrayActive[counter].name = tempArrayActive[counter].name?.replaceAll('_', ' ');
+        }
 
-        setActive(tempArray);
+        setActive(tempArrayActive);
 
         /*
         dbActive.transaction(query => {
@@ -81,7 +84,18 @@ const MainPage = ({navigation}:any) => {
                 console.log(error);
             }
         })
+        */
 
+        const tempArrayAll = dbAll.getAllSync('SELECT name FROM sqlite_master WHERE type=\'' + type + '\' AND name <> \'sqlite_sequence\'') as TableNameClass[];
+        console.log(tempArrayAll);
+
+        for (let counter:number = 0; counter < tempArrayAll.length; counter++) {
+            tempArrayAll[counter].name = tempArrayAll[counter].name?.replaceAll('_', ' ');
+        }
+
+        setAll(tempArrayActive);
+
+        /*
         dbAll.transaction(query => {
             try {
                 query.executeSql('SELECT name FROM sqlite_master WHERE type=\'' + type + '\' AND name <> \'sqlite_sequence\'', [],
