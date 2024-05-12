@@ -8,7 +8,7 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import Activate from "../ActivateChecklist/ActivateList";
 
 class TableNameClass {
-    public name: string | undefined;
+    public name: string = '';
 }
 
 const Stack = createNativeStackNavigator();
@@ -40,8 +40,8 @@ const MainPage = ({navigation}:any) => {
     const [active, setActive] = useState<TableNameClass[]>([]);
     const [all, setAll] = useState<TableNameClass[]>([]);
     const [isLoading, setIsLoading] = useState(true);
-    const dbActive = SQLite.openDatabase('ActiveCheckLists.db');
-    const dbAll = SQLite.openDatabase('AllCheckLists.db');
+    const dbActive = SQLite.openDatabaseSync('ActiveCheckLists.db');
+    const dbAll = SQLite.openDatabaseSync('AllCheckLists.db');
     const isFocused = useIsFocused();
     const type = 'table';
     let TempArray: TableNameClass[] = [];
@@ -55,6 +55,14 @@ const MainPage = ({navigation}:any) => {
             //query.executeSql('DROP TABLE Geninstaller Computer');
         //})
         //console.log('deleted?')
+
+
+        const tempArray = dbActive.getAllSync('SELECT name FROM sqlite_master WHERE type=\'' + type + '\' AND name <> \'sqlite_sequence\'') as TableNameClass[];
+        console.log(tempArray);
+
+        setActive(tempArray);
+
+        /*
         dbActive.transaction(query => {
             try {
                 query.executeSql('SELECT name FROM sqlite_master WHERE type=\'' + type + '\' AND name <> \'sqlite_sequence\'', [],
@@ -92,6 +100,7 @@ const MainPage = ({navigation}:any) => {
                 console.log(error);
             }
         })
+        */
         setIsLoading(false);
     }
 

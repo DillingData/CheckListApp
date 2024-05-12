@@ -64,9 +64,14 @@ const ShowAllCheckLists = ({navigation}:any) => {
         */
 
         //const db = SQLite.openDatabase('ActiveCheckLists.db');
-        const db = SQLite.openDatabase('AllCheckLists.db');
+        const db = SQLite.openDatabaseSync('AllCheckLists.db');
         let TempArray: TableNameClass[] = [];
 
+        const tempArray = db.getAllSync('SELECT name FROM sqlite_master WHERE type=\'' + type + '\' AND name <> \'sqlite_sequence\'');
+
+        //setNames(tempArray);
+
+        /*
         db.transaction(query => {
             try {
                 query.executeSql('SELECT name FROM sqlite_master WHERE type=\'' + type + '\' AND name <> \'sqlite_sequence\'', [],
@@ -89,6 +94,7 @@ const ShowAllCheckLists = ({navigation}:any) => {
                 console.log(error);
             }
         })
+        */
     }
 
     useEffect(() => {

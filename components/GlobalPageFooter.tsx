@@ -5,7 +5,8 @@ import NewCheckList from "./NewCheckList/NewCheckList";
 import EditCheckList from "./ManageChecklist/EditCheckList";
 import MainPage from "./MainPage/MainPage";
 import EditOrDeleteList from "./ManageChecklist/EditOrDeleteList";
-import { Ionicons } from '@expo/vector-icons';
+//import { Ionicons } from '@expo/vector-icons';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 import { NavigationContainer } from "@react-navigation/native";
 
 const Tab = createBottomTabNavigator();
@@ -17,7 +18,7 @@ const FooterMenu = () => {
         <Tab.Navigator
             screenOptions={({ route }) => ({
                 tabBarIcon: ({ focused, color, size }) => {
-                  let iconName;
+                  let iconName:string = '';
                   if (route.name === 'Home') {
                     iconName = focused ? 'home' as const : 'home' as const ;
                   } else if (route.name === 'New List') {

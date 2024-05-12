@@ -50,6 +50,7 @@ const ShowActiveCheckLists = ({TableNameClass}:any) => {
     const [activeChecklist, setActive] = useState<ActiveChecklist[]>([]);
     const isFocused = useIsFocused();
 
+    /*
     const db = SQLite.openDatabase('ActiveCheckLists.db');
     //const db = SQLite.openDatabase(dbVersion);
     let TempArray: TableNameClass[] = [];
@@ -85,12 +86,12 @@ const ShowActiveCheckLists = ({TableNameClass}:any) => {
                 console.log(error);
             }
         })
-}
-
+    }
+    */
      
     useEffect(() => {
         if (isFocused) {
-            loadData();
+            //loadData();
         }
     }, [isFocused])
     {/*
