@@ -244,7 +244,7 @@ const Activate = ({route, navigation}:any) => {
         type tempHolding = {
             ID: number | undefined;
             TASK: string | undefined;
-            COMPLETED: boolean | undefined;
+            COMPLETED: boolean | number;
         }
 
         const tempArray:tempHolding[] = dbActive.getAllSync('SELECT * FROM ' + tableName + '') as tempHolding[]
@@ -257,6 +257,7 @@ const Activate = ({route, navigation}:any) => {
             }
         }
 
+        /*
         dbActive.transaction(query => {
             try {
                 query.executeSql('SELECT * FROM ' + tableName + '', [],
@@ -282,6 +283,7 @@ const Activate = ({route, navigation}:any) => {
                 console.log(error);
             }
         })
+        */
     }
 
     useEffect(() => {

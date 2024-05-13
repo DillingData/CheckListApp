@@ -69,7 +69,18 @@ const NewCheckList = () => {
 
         console.log(parsedName);
 
-        const db = SQLite.openDatabase('AllCheckLists.db');
+        const db = SQLite.openDatabaseSync('AllCheckLists.db');
+
+        db.execSync('CREATE TABLE IF NOT EXISTS ' + parsedName + '(ID INTEGER PRIMARY KEY AUTOINCREMENT, TASK TEXT)');
+        for (let counter = 0; counter < tasks.length; counter++) {
+            try {
+                db.execSync('INSERT INTO ' + parsedName + ' (TASK) VALUES (\'' + tasks[counter] + '\')');
+            } catch (error) {
+                console.log(error);
+            }
+        } 
+
+        /*
         db.transaction(query => {
             try {
                 query.executeSql('CREATE TABLE IF NOT EXISTS ' + parsedName + '(ID INTEGER PRIMARY KEY AUTOINCREMENT, TASK TEXT)');
@@ -85,6 +96,7 @@ const NewCheckList = () => {
                 }
             } 
         })
+        */
 
         Alert.alert('Checklist added');
         clearInputField();
@@ -95,9 +107,12 @@ const NewCheckList = () => {
     //Use to delete tables from the SQLite database, it needs manual handling with database name, 
     //future improvement to make it look through database names and delete all in the list.
     const DeletAllChecklists = () => {
-        const db = SQLite.openDatabase('AllCheckLists.db');
+        const db = SQLite.openDatabaseSync('AllCheckLists.db');
         
+        const tempHolding:string[] = db. getAllSync('SELECT name FROM sqlite_master WHERE type=\'table\' AND name <> \'sqlite_sequence\'') as string[];
+        setTables(tempHolding);
 
+        /*
         db.transaction(query => {
             try {
                 query.executeSql('SELECT name FROM sqlite_master WHERE type=\'table\' AND name <> \'sqlite_sequence\'', [],
@@ -113,7 +128,8 @@ const NewCheckList = () => {
                 console.log(error);
             }
         })
-
+        */
+        /*
         try {
             db.transaction(query => {
                 query.executeSql('DROP TABLE IF EXISTS NewCheck')
@@ -121,9 +137,10 @@ const NewCheckList = () => {
         } catch(error) {
             console.log(error);
         }
+        */
 
         console.log(tables);
-
+        
     }
 
     return(

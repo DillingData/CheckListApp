@@ -28,11 +28,14 @@ const EditOrDeleteList = ({route, navigation}:any) => {
     }
 
     const DeleteRow = (ID:number | undefined) => {
-        const db = SQLite.openDatabase('AllCheckLists.db');
+        const db = SQLite.openDatabaseSync('AllCheckLists.db');
+        
+        db.execSync('DELETE FROM ' + tableName + ' WHERE ID = ' + ID);
+        /*
         db.transaction(query => {
             query.executeSql('DELETE FROM ' + tableName + ' WHERE ID = ' + ID);
         })
-
+        */
         loadData();
         //alert('Row with ID: ' + ID + ' were deleted');
     }
@@ -50,28 +53,45 @@ const EditOrDeleteList = ({route, navigation}:any) => {
     }
 
     const DeleteConfirmed = () => {
-        const db = SQLite.openDatabase('AllCheckLists.db');
+        const db = SQLite.openDatabaseSync('AllCheckLists.db');
+
+        db.execSync('DROP TABLE ' + tableName);
+
+        /*
         db.transaction(query => {
             query.executeSql('DROP TABLE ' + tableName);
         })
+        */
 
         navigation.goBack();
     }
 
     const SaveCheckList = () => {
-        const db = SQLite.openDatabase('AllCheckLists.db');
+        const db = SQLite.openDatabaseSync('AllCheckLists.db');
+        
+        for (let counter = 0; counter < chosenChecklist.length; counter++) {
+            db.execSync('UPDATE ' + tableName + ' SET TASK = \'' + chosenChecklist[counter].TASK + '\' WHERE ID = ' + chosenChecklist[counter].ID)
+        }
+        
+        /*
         db.transaction(query => {
             for (let counter = 0; counter < chosenChecklist.length; counter++) {
                 query.executeSql('UPDATE ' + tableName + ' SET TASK = \'' + chosenChecklist[counter].TASK + '\' WHERE ID = ' + chosenChecklist[counter].ID)
             }
         })
+        */
         
         Keyboard.dismiss();
         loadData();
     }
 
     const loadData = () => {
-        const db = SQLite.openDatabase('AllCheckLists.db');
+        const db = SQLite.openDatabaseSync('AllCheckLists.db');
+
+        const tempHolding:CheckList[] = db.getAllSync('SELECT * FROM ' + tableName) as CheckList[];
+        setChecklist(tempHolding);
+
+        /*
         db.transaction(query => {
             query.executeSql('SELECT * FROM ' + tableName + '', [],
                 (_, { rows: { _array } }) => {
@@ -84,6 +104,7 @@ const EditOrDeleteList = ({route, navigation}:any) => {
                 }
             )
         })
+        */
     }
 
     useEffect(() => {

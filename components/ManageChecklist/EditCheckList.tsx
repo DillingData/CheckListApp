@@ -45,9 +45,18 @@ const EditCheckList = ({navigation}:any) => {
 
     const loadData = () => {
         
-        const db = SQLite.openDatabase('AllCheckLists.db');
+        const db = SQLite.openDatabaseSync('AllCheckLists.db');
         let TempArray: TableNameClass[] = [];
 
+        const tempHolding:TableNameClass[] = db.getAllSync('SELECT name FROM sqlite_master WHERE type=\'table\' AND name <> \'sqlite_sequence\'') as TableNameClass[];
+        
+        for (let counter:number = 0; counter < tempHolding.length; counter++) {
+            tempHolding[counter].name = tempHolding[counter].name?.replaceAll('_', ' ');
+        }
+
+        setNames(tempHolding);
+
+        /*
         db.transaction(query => {
             try {
                 query.executeSql('SELECT name FROM sqlite_master WHERE type=\'table\' AND name <> \'sqlite_sequence\'', [],
@@ -68,6 +77,7 @@ const EditCheckList = ({navigation}:any) => {
                 console.log(error);
             }
         })
+        */
     }
 
     useEffect(() => {
