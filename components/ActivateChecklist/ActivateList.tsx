@@ -241,6 +241,22 @@ const Activate = ({route, navigation}:any) => {
     const loadActivatedChecklist = () => {
         let tableName: string | undefined = JSON.stringify(Table).replace(/ /g, '_');
 
+        type tempHolding = {
+            ID: number | undefined;
+            TASK: string | undefined;
+            COMPLETED: boolean | undefined;
+        }
+
+        const tempArray:tempHolding[] = dbActive.getAllSync('SELECT * FROM ' + tableName + '') as tempHolding[]
+
+        for (let counter = 0; counter < tempArray.length; counter++) {
+            if (tempArray[counter].COMPLETED === 0) {
+                tempArray[counter].COMPLETED = false;
+            } else {
+                tempArray[counter].COMPLETED = true;
+            }
+        }
+
         dbActive.transaction(query => {
             try {
                 query.executeSql('SELECT * FROM ' + tableName + '', [],
