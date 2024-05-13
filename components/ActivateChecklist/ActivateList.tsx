@@ -11,6 +11,12 @@ class ChosenChecklist {
     public TASK: string | undefined;
 }
 
+class TempHoldingArray {
+    public id: number | undefined;
+    public name: string | undefined;
+    public task: string | undefined;
+}
+
 class ActivatedChecklist {
     public ID: number | undefined;
     public TASK: string | undefined;
@@ -26,8 +32,8 @@ const Activate = ({route, navigation}:any) => {
     const [active, setActive] = useState<ActivatedChecklist[]>([]);
     const [chosen, setChosen] = useState<ChosenChecklist[]>([]);
     const [isLoading, setIsLoading] = useState(true);
-    const dbAll = SQLite.openDatabase("AllCheckLists.db");
-    const dbActive = SQLite.openDatabase("ActiveCheckLists.db");
+    const dbAll = SQLite.openDatabaseSync("AllCheckLists.db");
+    const dbActive = SQLite.openDatabaseSync("ActiveCheckLists.db");
     //const dbActive = SQLite.openDatabase("AllCheckLists.db");
     const type = 'table';
     const { Table } = route.params;
@@ -37,8 +43,31 @@ const Activate = ({route, navigation}:any) => {
         let TempArray: TableNameClass[] = [];
         //const { Table } = route.params;
         let incomingTable: string | undefined = JSON.stringify(Table).replace(/ /g, '_').replaceAll('"', '');
-        const dbActive = SQLite.openDatabase('ActiveCheckLists.db');
+        const dbActive = SQLite.openDatabaseSync('ActiveCheckLists.db');
 
+        TempArray = dbActive.getAllSync('SELECT name FROM sqlite_master WHERE type=\'' + type + '\' AND name <> \'sqlite_sequence\'') as TableNameClass[];
+
+        let checkBool = 'false';
+
+        for (let counter = 0; counter < TempArray.length; counter++) {
+            if (TempArray[counter].name === incomingTable) {
+                checkBool = 'true';
+                break;
+            }
+        }
+
+        if (checkBool === 'true') {
+            Alert.alert('Error', 'This checklist has already been started - You need to finish the one you started or delete it to add it again', [
+                {
+                    text: 'Go Back',
+                    onPress: () => navigation.goBack(),
+                },
+            ]);
+        } else {
+            activateChecklist(Table);
+        }
+
+        /*
         dbActive.transaction(query => {
             try {
                 query.executeSql('SELECT name FROM sqlite_master WHERE type=\'' + type + '\' AND name <> \'sqlite_sequence\'', [], 
@@ -71,12 +100,25 @@ const Activate = ({route, navigation}:any) => {
                 console.log(error);
             } 
         })
+        */
     }
 
     const activateChecklist = (Table: any) => {    
         let tableName: string | undefined = JSON.stringify(Table).replace(/ /g, '_');
         let tableName2: string | undefined = JSON.stringify(Table);
 
+        try {
+            const tempArray: TempHoldingArray[] = dbAll.getAllSync('SELECT * FROM ' + tableName + '') as TempHoldingArray[];
+            dbActive.execSync('CREATE TABLE IF NOT EXISTS ' + tableName + '(ID INTEGER PRIMARY KEY AUTOINCREMENT, TASK TEXT, COMPLETED INT)');
+            for (let counter = 0; counter < tempArray.length; counter++) {
+                dbAll.execSync('INSERT INTO ' + tableName + ' (TASK, COMPLETED) VALUES (\'' + tempArray[counter].task + '\', 0)');
+            }
+        }
+        catch (error) {
+            console.log(error);
+        }
+
+        /*
         dbAll.transaction(query => {
             try {
                 query.executeSql('SELECT * FROM ' + tableName + '', [],
@@ -111,7 +153,8 @@ const Activate = ({route, navigation}:any) => {
             catch (error) {
                 console.log(error);
             }
-        })    
+        })  
+        */  
     }
 
     const TerminateChecklist = (tableName:string) => {
@@ -124,6 +167,16 @@ const Activate = ({route, navigation}:any) => {
             {
                 text: 'Yes',
                 onPress: () => {
+
+                    dbActive.execSync('DROP TABLE ' + tableName);
+                    Alert.alert('Checklist terminated', 'The checklist has been terminated and you can now start it again', [
+                        {
+                            text: 'Ok',
+                            onPress: () => navigation.goBack(),
+                        },
+
+                    ]);
+                    /*
                     dbActive.transaction(query => {
                         try {
                             query.executeSql('DROP TABLE ' + tableName);
@@ -140,6 +193,7 @@ const Activate = ({route, navigation}:any) => {
                             console.log(error);
                         } 
                     })
+                    */
                 },
 
             },
@@ -149,6 +203,20 @@ const Activate = ({route, navigation}:any) => {
     const updateCompleted = (ID: number | undefined, completed: boolean | undefined) => {
         let tableName: string | undefined = JSON.stringify(Table).replace(/ /g, '_');
 
+        try {
+            let completedToDB: number = 0;
+            if (completed === false) {
+                completedToDB = 1;
+            } else {
+                completedToDB = 0;
+            }
+            dbActive.execSync('UPDATE ' + tableName + ' SET COMPLETED = ' + completedToDB + ' WHERE ID = ' + ID)
+        }
+        catch(error) {
+            console.log(error);
+        }
+
+        /*
         dbActive.transaction(query => {
             try {
                 let completedToDB: number = 0;
@@ -163,6 +231,7 @@ const Activate = ({route, navigation}:any) => {
                 console.log(error);
             }
         })
+        */
 
         //Alert.alert('ID: ' + ID + ' updated as completed or not completed')
 
