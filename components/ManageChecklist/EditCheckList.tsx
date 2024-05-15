@@ -82,6 +82,10 @@ const EditCheckList = ({navigation}:any) => {
         */
     }
 
+    /*
+    <Text style={mainPageStyles.ChecklistText}>There are no checklists available to start, to add a checklist please use the "New List" from below menu</Text>
+    */
+
     useEffect(() => {
         if (isFocused) {
             loadData();
@@ -96,6 +100,17 @@ const EditCheckList = ({navigation}:any) => {
                 </View>
                 <View>
                     <Text>Edit Existing Checklist</Text>
+                </View>
+            </View>
+        )
+    } else if (names.length == 0) {
+        return(
+            <View>
+                <View>
+                    <GlobalHeader text="Manage Checklist" />
+                </View>
+                <View>
+                    <Text style={style.ChecklistText}>There are no checklists available to edit, to add a checklist please use the "New List" from below menu</Text>
                 </View>
             </View>
         )
@@ -149,6 +164,15 @@ const style = StyleSheet.create({
     },
     ScrollView: {
         height: '100%',
+    },
+    ChecklistText: {
+        textAlign: 'center',
+        color: '#336DDD',
+        fontWeight: '500',
+        marginTop: '5%',
+        marginLeft: '10%',
+        marginRight: '10%', 
+        fontSize: 17,
     }
 })
 
