@@ -44,18 +44,11 @@ const MainPage = ({navigation}:any) => {
     const dbAll = SQLite.openDatabaseSync('AllCheckLists.db');
     const isFocused = useIsFocused();
     const type = 'table';
-    let TempArray: TableNameClass[] = [];
 
     const loadData = () => {
-        //Used for debug to remove activated checklists until delete function has been created
-        //dbActive.transaction(query => {
-            //query.executeSql('DROP TABLE Test_Without_Spaces');
-            //query.executeSql('DROP TABLE Test_2_Without');
-            //query.executeSql('DROP TABLE Test_med_mellemrum');
-            //query.executeSql('DROP TABLE Geninstaller Computer');
-        //})
-        //console.log('deleted?')
 
+        //dbActive.execSync('DROP TABLE Start_nyt_projekt');
+        
         const tempArrayActive:TableNameClass[] = dbActive.getAllSync('SELECT name FROM sqlite_master WHERE type=\'' + type + '\' AND name <> \'sqlite_sequence\'') as TableNameClass[];
         console.log(tempArrayActive + ' - From Load Active');
 
@@ -63,29 +56,7 @@ const MainPage = ({navigation}:any) => {
             tempArrayActive[counter].name = tempArrayActive[counter].name?.replaceAll('_', ' ');
         }
 
-        setActive(oldArray => [...oldArray, ...tempArrayActive]);
-        //setActive(tempArrayActive);
-
-        /*
-        dbActive.transaction(query => {
-            try {
-                query.executeSql('SELECT name FROM sqlite_master WHERE type=\'' + type + '\' AND name <> \'sqlite_sequence\'', [],
-                (_, { rows: { _array } }) => {
-                    TempArray = _array;
-                    for (let counter:number = 0; counter < TempArray.length; counter++) {
-                        TempArray[counter].name = TempArray[counter].name?.replaceAll('_', ' ');
-                    }
-                    setActive(TempArray);
-                },
-                (_, error): boolean | any => {
-                    console.log(error + 'Where i get the tables');
-                }
-            );
-            } catch (error) {
-                console.log(error);
-            }
-        })
-        */
+        setActive(tempArrayActive);
 
         const tempArrayAll = dbAll.getAllSync('SELECT name FROM sqlite_master WHERE type=\'' + type + '\' AND name <> \'sqlite_sequence\'') as TableNameClass[];
 
@@ -93,7 +64,7 @@ const MainPage = ({navigation}:any) => {
             tempArrayAll[counter].name = tempArrayAll[counter].name?.replaceAll('_', ' ');
         }
 
-        setAll(oldArray => [...oldArray, ...tempArrayAll]);
+        setAll(tempArrayAll);
 
         setIsLoading(false);
     }
