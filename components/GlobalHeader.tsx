@@ -4,6 +4,7 @@ type HeaderText = {
     text: string; 
 }
 
+//The global header to be used in the entire project
 const GlobalHeader = (props: HeaderText) => {
     return(
         

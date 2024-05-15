@@ -6,23 +6,27 @@ import { useState } from "react";
 import GlobalHeader from "../GlobalHeader";
 import { useIsFocused } from "@react-navigation/native";
 
+//Class to hold the chosen checklist
 class ChosenChecklist {
     public ID: number | undefined;
     public TASK: string | undefined;
 }
 
+//Class to temporary hold a checklist
 class TempHoldingArray {
     public ID: number | undefined;
     public NAME: string | undefined;
     public TASK: string | undefined;
 }
 
+//Class to hold the activated checklist
 class ActivatedChecklist {
     public ID: number | undefined;
     public TASK: string | undefined;
     public COMPLETED: boolean | undefined;
 }
 
+//Clas to hold the table name
 class TableNameClass {
     public name: string | undefined;
 }
@@ -35,7 +39,6 @@ const Activate = ({route, navigation}:any) => {
     const [isLoading, setIsLoading] = useState(true);
     const dbAll = SQLite.openDatabaseSync("AllCheckLists.db");
     const dbActive = SQLite.openDatabaseSync("ActiveCheckLists.db");
-    //const dbActive = SQLite.openDatabase("AllCheckLists.db");
     const type = 'table';
     const { Table } = route.params;
 
@@ -69,18 +72,12 @@ const Activate = ({route, navigation}:any) => {
         }
     }
 
+    //Activates the checklist
     const activateChecklist = (Table: any) => {    
         let tableName: string | undefined = JSON.stringify(Table).replace(/ /g, '_');
-        console.log('activateChecklist');
 
         try {
             const tempArray: TempHoldingArray[] = dbAll.getAllSync('SELECT * FROM ' + tableName + '') as TempHoldingArray[];
-            
-            console.log(tempArray);
-
-            for (let counter = 0; counter < tempArray.length; counter++) {
-                console.log(tempArray[counter].ID)
-            }
             
             dbActive.execSync('CREATE TABLE IF NOT EXISTS ' + tableName + '(ID INTEGER PRIMARY KEY AUTOINCREMENT, TASK TEXT, COMPLETED INT)');
             for (let counter = 0; counter < tempArray.length; counter++) {
@@ -94,6 +91,7 @@ const Activate = ({route, navigation}:any) => {
         loadActivatedChecklist();
     }
 
+    //Deletes an activated checklist
     const TerminateChecklist = (tableName:string) => {
         tableName = JSON.stringify(tableName).replace(/ /g, '_');
 
@@ -118,6 +116,7 @@ const Activate = ({route, navigation}:any) => {
         ])
     }
 
+    //Updates a task as completed
     const updateCompleted = (ID: number | undefined, completed: boolean | undefined) => {
         let tableName: string | undefined = JSON.stringify(Table).replace(/ /g, '_');
 
@@ -137,6 +136,7 @@ const Activate = ({route, navigation}:any) => {
         loadActivatedChecklist();
     }
 
+    //loading the activated checklist
     const loadActivatedChecklist = () => {
         let tableName: string | undefined = JSON.stringify(Table).replace(/ /g, '_');
 
@@ -173,6 +173,7 @@ const Activate = ({route, navigation}:any) => {
         setIsLoading(false);
     }
 
+    //Used when a user finishes a checklist (will remove it from the activated checklist list)
     const finishList = (tableName:string) => {
         Alert.alert('Checklist completed', 'This checklist has been completed, do you want to remove it from active checklists. This action is needed to be able to start the checklist again - WARNING this CANNOT be reverted', [
             {

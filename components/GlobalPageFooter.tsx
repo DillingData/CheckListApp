@@ -1,17 +1,13 @@
 import React from "react";
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs'
-import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import NewCheckList from "./NewCheckList/NewCheckList";
 import EditCheckList from "./ManageChecklist/EditCheckList";
 import MainPage from "./MainPage/MainPage";
-import EditOrDeleteList from "./ManageChecklist/EditOrDeleteList";
-//import { Ionicons } from '@expo/vector-icons';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import { NavigationContainer } from "@react-navigation/native";
 
-const Tab = createBottomTabNavigator();
-const Stack = createNativeStackNavigator(); 
+const Tab = createBottomTabNavigator(); 
 
+//The menu bar in the bottom of the page
 const FooterMenu = () => {
 
     return (
@@ -51,29 +47,4 @@ const FooterMenu = () => {
     );
 }
 
-{/* 
-const StackMenu = () => {
-  return (
-    <Stack.Navigator>
-      <Stack.Screen 
-        name="EditOrDelete" 
-        component={EditCheckList} />
-    </Stack.Navigator>
-  ) 
-  
-}
-*/}
-{/* 
-export default () => {
-    <FooterMenu />
-    <StackMenu />
-}
-*/}
-{/* 
-export default () => {
-  <NavigationContainer>
-    <FooterMenu />
-  </NavigationContainer>
-}
-*/}
 export default FooterMenu;

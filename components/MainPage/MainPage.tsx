@@ -13,6 +13,7 @@ class TableNameClass {
 
 const Stack = createNativeStackNavigator();
 
+//Stacknavigator for the checklist
 function MyStack() {
     return (
         <Stack.Navigator>
@@ -45,18 +46,23 @@ const MainPage = ({navigation}:any) => {
     const isFocused = useIsFocused();
     const type = 'table';
 
+    //Loading the data to be shown (both activated checklists and all checklists)
     const loadData = () => {
 
+        //Loads the activated checklists
         const tempArrayActive:TableNameClass[] = dbActive.getAllSync('SELECT name FROM sqlite_master WHERE type=\'' + type + '\' AND name <> \'sqlite_sequence\'') as TableNameClass[];
 
+        //Replaces underscore character with a space
         for (let counter:number = 0; counter < tempArrayActive.length; counter++) {
             tempArrayActive[counter].name = tempArrayActive[counter].name?.replaceAll('_', ' ');
         }
 
         setActive(tempArrayActive);
 
+        //Gets all available checklists
         const tempArrayAll = dbAll.getAllSync('SELECT name FROM sqlite_master WHERE type=\'' + type + '\' AND name <> \'sqlite_sequence\'') as TableNameClass[];
 
+        //Replaces underscore character with a space
         for (let counter:number = 0; counter < tempArrayAll.length; counter++) {
             tempArrayAll[counter].name = tempArrayAll[counter].name?.replaceAll('_', ' ');
         }

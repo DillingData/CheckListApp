@@ -15,6 +15,7 @@ class TableNameClass {
 }
 const Stack = createNativeStackNavigator();
 
+//Stack navigator for when pressing a checklist
 function MyStack() {
     return (
         <Stack.Navigator>
@@ -43,11 +44,10 @@ const EditCheckList = ({navigation}:any) => {
     const [names, setNames] = useState<TableNameClass[]>([]);
     const isFocused = useIsFocused();
 
+    //Gets all the checklists to be shown on the page
     const loadData = () => {
         
         const db = SQLite.openDatabaseSync('AllCheckLists.db');
-        let TempArray: TableNameClass[] = [];
-
         const tempHolding:TableNameClass[] = db.getAllSync('SELECT name FROM sqlite_master WHERE type=\'table\' AND name <> \'sqlite_sequence\'') as TableNameClass[];
         
         for (let counter:number = 0; counter < tempHolding.length; counter++) {
@@ -57,34 +57,7 @@ const EditCheckList = ({navigation}:any) => {
         setNames(tempHolding);
 
         setIsLoading(false);
-
-        /*
-        db.transaction(query => {
-            try {
-                query.executeSql('SELECT name FROM sqlite_master WHERE type=\'table\' AND name <> \'sqlite_sequence\'', [],
-                (_, { rows: { _array } }) => {
-                    TempArray = _array;
-                    for (let counter:number = 0; counter < TempArray.length; counter++) {
-                        TempArray[counter].name = TempArray[counter].name?.replaceAll('_', ' ');
-                    }
-                    setNames(TempArray);
-                    setIsLoading(false);
-                },
-                (_, error): boolean | any => {
-                    console.log(error + 'Where i get the tables'),
-                    setIsLoading(false);
-                }
-            );
-            } catch (error) {
-                console.log(error);
-            }
-        })
-        */
     }
-
-    /*
-    <Text style={mainPageStyles.ChecklistText}>There are no checklists available to start, to add a checklist please use the "New List" from below menu</Text>
-    */
 
     useEffect(() => {
         if (isFocused) {

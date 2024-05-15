@@ -6,6 +6,7 @@ import { useIsFocused } from "@react-navigation/native";
 import GlobalHeader from "../GlobalHeader";
 import { Ionicons } from '@expo/vector-icons';
 
+//Class to hold the chosen checklist
 class CheckList {
     public ID: number | undefined;
     public TASK: string | undefined;
@@ -27,6 +28,7 @@ const EditOrDeleteList = ({route, navigation}:any) => {
         }
     }
 
+    //Deletes a task from the checklist
     const DeleteRow = (ID:number | undefined) => {
         const db = SQLite.openDatabaseSync('AllCheckLists.db');
         
@@ -35,12 +37,13 @@ const EditOrDeleteList = ({route, navigation}:any) => {
         loadData();
     }
 
+    //Prompt to make sure the user wants to delete the checklist
     const DeleteChecklist = () => {
         const table_without = tableName.replaceAll('_', ' ')
         
         Alert.alert(
             'Delete confirmation',
-            'Do you want to delete ' + table_without + ' checklist',
+            'Do you want to delete ' + table_without + ' checklist - WARNING this CANNOT be reverted',
             [
                 {text: 'Cancel', style: 'cancel'},
                 {text: 'Ok', onPress: () => DeleteConfirmed()},
@@ -49,6 +52,7 @@ const EditOrDeleteList = ({route, navigation}:any) => {
         );
     }
 
+    //Deletes the entire checklist from the database
     const DeleteConfirmed = () => {
         const db = SQLite.openDatabaseSync('AllCheckLists.db');
 
@@ -57,6 +61,7 @@ const EditOrDeleteList = ({route, navigation}:any) => {
         navigation.goBack();
     }
 
+    //Saves any change made in the checklist
     const SaveCheckList = () => {
         const db = SQLite.openDatabaseSync('AllCheckLists.db');
         
@@ -68,6 +73,7 @@ const EditOrDeleteList = ({route, navigation}:any) => {
         loadData();
     }
 
+    //Loads the data to be shown on the page
     const loadData = () => {
         const db = SQLite.openDatabaseSync('AllCheckLists.db');
 

@@ -80,24 +80,6 @@ const NewCheckList = () => {
             }
         } 
 
-        /*
-        db.transaction(query => {
-            try {
-                query.executeSql('CREATE TABLE IF NOT EXISTS ' + parsedName + '(ID INTEGER PRIMARY KEY AUTOINCREMENT, TASK TEXT)');
-            } catch (error) {
-                console.log(error);
-            }
-
-            for (let counter = 0; counter < tasks.length; counter++) {
-                try {
-                    query.executeSql('INSERT INTO ' + parsedName + ' (TASK) VALUES (\'' + tasks[counter] + '\')');
-                } catch (error) {
-                    console.log(error);
-                }
-            } 
-        })
-        */
-
         Alert.alert('Checklist added');
         clearInputField();
         clearTasks();
