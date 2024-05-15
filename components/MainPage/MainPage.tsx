@@ -47,10 +47,7 @@ const MainPage = ({navigation}:any) => {
 
     const loadData = () => {
 
-        //dbActive.execSync('DROP TABLE Start_nyt_projekt');
-        
         const tempArrayActive:TableNameClass[] = dbActive.getAllSync('SELECT name FROM sqlite_master WHERE type=\'' + type + '\' AND name <> \'sqlite_sequence\'') as TableNameClass[];
-        console.log(tempArrayActive + ' - From Load Active');
 
         for (let counter:number = 0; counter < tempArrayActive.length; counter++) {
             tempArrayActive[counter].name = tempArrayActive[counter].name?.replaceAll('_', ' ');

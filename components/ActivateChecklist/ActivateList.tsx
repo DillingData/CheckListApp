@@ -207,7 +207,6 @@ const Activate = ({route, navigation}:any) => {
                         onPress={() => {navigation.goBack()}}
                     />
                 </View>
-
             </View>
         )
     }
@@ -259,6 +258,7 @@ const ActivateStyles = StyleSheet.create({
         marginRight: '5%',
         marginTop: 10,
         textAlign: 'center',
+        alignItems: 'center',
     },
     Text: {
         color: '#336DDD',
