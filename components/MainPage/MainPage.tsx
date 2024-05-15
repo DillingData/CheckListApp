@@ -90,12 +90,12 @@ const MainPage = ({navigation}:any) => {
 
                 <View style={mainPageStyles.Element}>
                     <Text style={mainPageStyles.HeaderText2}>Active Checklists</Text>
-                    <Text>No active Checklists</Text>
+                    <Text style={mainPageStyles.ChecklistText}>There are no active checklist. To start a new checklist press on a checklist from below list</Text>
                 </View>
 
                 <View style={mainPageStyles.Element}>
                     <Text style={mainPageStyles.HeaderText2}>All Checklists</Text>
-                    <Text>No Checklists</Text>
+                    <Text style={mainPageStyles.ChecklistText}>There are no checklists available to start, to add a checklist please use the "New List" from below menu</Text>
                 </View>
             </View>
         )
@@ -109,7 +109,7 @@ const MainPage = ({navigation}:any) => {
                 <View style={mainPageStyles.Element}>
                     <View>
                         <Text style={mainPageStyles.HeaderText2}>Active Checklists</Text>
-                        <Text>No active Checklists</Text>
+                        <Text style={mainPageStyles.ChecklistText}>There are no active checklist. To start a new checklist press on a checklist from below list</Text>
                     </View>
                 </View>
 
@@ -152,7 +152,7 @@ const MainPage = ({navigation}:any) => {
 
                 <View style={mainPageStyles.Element}>
                     <Text style={mainPageStyles.HeaderText2}>All Checklists</Text>
-                    <Text>No Checklists</Text>
+                    <Text style={mainPageStyles.ChecklistText}>There are no checklists available to start, to add a checklist please use the "New List" from below menu</Text>
                 </View>
             </View>
         )
@@ -242,6 +242,15 @@ const mainPageStyles = StyleSheet.create({
     },
     Element: {
         height: 300,
+        width: '100%',
+    }, 
+    ChecklistText: {
+        textAlign: 'center',
+        color: '#336DDD',
+        fontWeight: '500',
+        marginTop: '5%',
+        marginLeft: '10%',
+        marginRight: '10%', 
     }
 })
 
