@@ -56,6 +56,8 @@ const EditCheckList = ({navigation}:any) => {
 
         setNames(tempHolding);
 
+        setIsLoading(false);
+
         /*
         db.transaction(query => {
             try {
