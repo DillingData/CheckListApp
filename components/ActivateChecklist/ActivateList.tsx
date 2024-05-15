@@ -156,9 +156,43 @@ const Activate = ({route, navigation}:any) => {
             }
         }
 
+        let numberCount: number = 0;
+
+        for (let counter = 0; counter < tempArray.length; counter++) {
+            if (tempArray[counter].COMPLETED == true) {
+                numberCount++;
+            }
+        }
+
+        if (numberCount == tempArray.length) {
+            finishList(tableName);
+        }
+
         setActive(tempArray as ActivatedChecklist[]);
 
         setIsLoading(false);
+    }
+
+    const finishList = (tableName:string) => {
+        Alert.alert('Checklist completed', 'This checklist has been completed, do you want to remove it from active checklists. This action is needed to be able to start the checklist again - WARNING this CANNOT be reverted', [
+            {
+                text: 'No',
+            },
+            {
+                text: 'Yes',
+                onPress: () => {
+
+                    dbActive.execSync('DROP TABLE ' + tableName);
+                    Alert.alert('Checklist finished', 'The checklist has been marked as finished and you can now start it again', [
+                        {
+                            text: 'Ok',
+                            onPress: () => navigation.goBack(),
+                        },
+
+                    ]);
+                },
+            },
+        ])
     }
 
     useEffect(() => {
