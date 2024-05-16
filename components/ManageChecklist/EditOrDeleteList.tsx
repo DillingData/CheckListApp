@@ -67,7 +67,7 @@ const EditOrDeleteList = ({route, navigation}:any) => {
         const db = SQLite.openDatabaseSync('AllCheckLists.db');
         
         for (let counter = 0; counter < chosenChecklist.length; counter++) {
-            db.execSync('UPDATE ' + tableName + ' SET TASK = \'' + chosenChecklist[counter].TASK + '\' WHERE ID = ' + chosenChecklist[counter].ID)
+            db.execSync('UPDATE ' + tableName + ' SET TASK = \'' + chosenChecklist[counter].TASK + '\', SEQUENCE = ' + counter + ' WHERE ID = ' + chosenChecklist[counter].ID)
         }
         
         Keyboard.dismiss();
@@ -103,8 +103,31 @@ const EditOrDeleteList = ({route, navigation}:any) => {
 
     const MoveRow = (index: number, direction: string) => {
         console.log('row: ' + index + ' moved: ' + direction)
-        const tempHolding:CheckList[] = chosenChecklist;
-        
+        let tempHoldingArray:CheckList[] = chosenChecklist;
+        let tempHoldingRow:CheckList = new CheckList();
+        if (direction === 'UP') {
+            if (index == 0) {
+                console.log('index = 0');
+                return;
+            } else {
+                const indexToChange:number = index - 1; 
+                tempHoldingRow = tempHoldingArray[indexToChange];
+                tempHoldingArray[indexToChange] = tempHoldingArray[index];
+                tempHoldingArray[index] = tempHoldingRow;
+                setChecklist(oldArray => [...tempHoldingArray]);
+            }
+        } else if (direction === 'DOWN') {
+            if ((index + 1) == tempHoldingArray.length) {
+                console.log('index = Max');
+                return;
+            } else {
+                const indexToChange:number = index + 1;
+                tempHoldingRow = tempHoldingArray[indexToChange];
+                tempHoldingArray[indexToChange] = tempHoldingArray[index];
+                tempHoldingArray[index] = tempHoldingRow;
+                setChecklist(oldArray => [...tempHoldingArray]);
+            }
+        }
     }
 
     useEffect(() => {
