@@ -71,10 +71,10 @@ const NewCheckList = () => {
 
         const db = SQLite.openDatabaseSync('AllCheckLists.db');
 
-        db.execSync('CREATE TABLE IF NOT EXISTS ' + parsedName + '(ID INTEGER PRIMARY KEY AUTOINCREMENT, TASK TEXT)');
+        db.execSync('CREATE TABLE IF NOT EXISTS ' + parsedName + '(ID INTEGER PRIMARY KEY AUTOINCREMENT, TASK TEXT, SEQUENCE INTEGER)');
         for (let counter = 0; counter < tasks.length; counter++) {
             try {
-                db.execSync('INSERT INTO ' + parsedName + ' (TASK) VALUES (\'' + tasks[counter] + '\')');
+                db.execSync('INSERT INTO ' + parsedName + ' (TASK, SEQUENCE) VALUES (\'' + tasks[counter] + '\', ' + counter + ')');
             } catch (error) {
                 console.log(error);
             }

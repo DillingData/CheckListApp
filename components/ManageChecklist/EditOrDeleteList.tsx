@@ -10,6 +10,7 @@ import { Ionicons } from '@expo/vector-icons';
 class CheckList {
     public ID: number | undefined;
     public TASK: string | undefined;
+    public SEQUENCE: number = 0;
 }
 
 const EditOrDeleteList = ({route, navigation}:any) => {
@@ -80,6 +81,16 @@ const EditOrDeleteList = ({route, navigation}:any) => {
         const tempHolding:CheckList[] = db.getAllSync('SELECT * FROM ' + tableName) as CheckList[];
         setChecklist(tempHolding);
 
+        tempHolding.sort((a, b) => {
+            if (a.SEQUENCE < b.SEQUENCE) {
+                return -1;
+            }
+            if (a.SEQUENCE > b.SEQUENCE) {
+                return 1;
+            }
+            return 0;
+        })
+
         setIsLoading(false);
     }
 
@@ -108,6 +119,7 @@ const EditOrDeleteList = ({route, navigation}:any) => {
                             editable
                             value={CheckList.TASK}
                             onChangeText={text => UpdateState(text, CheckList.ID)}/>
+                        <Text>{CheckList.SEQUENCE}</Text>
                         <Pressable style={styles.DeleteButton} onPress={() => DeleteRow(CheckList.ID)}>
                             <Ionicons 
                                 name="close-circle"
