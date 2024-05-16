@@ -95,26 +95,16 @@ const EditOrDeleteList = ({route, navigation}:any) => {
     }
 
     const AddNewTask = () => {
-
         const db = SQLite.openDatabaseSync('AllCheckLists.db');
-
         const count = chosenChecklist.length;
-
         db.execSync('INSERT INTO ' + tableName + ' (TASK, SEQUENCE) VALUES (\' \', ' + count +')');
-
         loadData();
+    }
 
-        /*
-        const newTask: CheckList = new CheckList;
-
-        newTask.ID = undefined;
-        newTask.SEQUENCE = 0;
-        newTask.TASK = '';
-
-
-
-        setChecklist(oldArray => [...oldArray, newTask]);
-        */
+    const MoveRow = (index: number, direction: string) => {
+        console.log('row: ' + index + ' moved: ' + direction)
+        const tempHolding:CheckList[] = chosenChecklist;
+        
     }
 
     useEffect(() => {
@@ -142,13 +132,13 @@ const EditOrDeleteList = ({route, navigation}:any) => {
                             editable
                             value={CheckList.TASK}
                             onChangeText={text => UpdateState(text, CheckList.ID)}/>
-                        <Pressable style={styles.DeleteButton}>
+                        <Pressable style={styles.DeleteButton} onPress={() => MoveRow(index, 'DOWN')}>
                             <Ionicons 
                                 name="arrow-down-outline"
                                 size={20}
                                 color="#336DDD"/>
                         </Pressable>
-                        <Pressable>
+                        <Pressable style={styles.DeleteButton} onPress={() => MoveRow(index, 'UP')}>
                             <Ionicons 
                                 name="arrow-up-outline"
                                 size={20}
@@ -206,10 +196,10 @@ const styles = StyleSheet.create ({
         marginBottom: 8,
         marginTop: 8,
         marginLeft: 15, 
-        width: '75%',
+        width: '70%',
     },
     DeleteButton: {
-        //marginTop: 5, 
+        marginRight: 8, 
     },
     ButtonRow: {
         flexDirection: 'row',
