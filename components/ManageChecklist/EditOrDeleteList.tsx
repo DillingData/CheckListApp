@@ -94,6 +94,29 @@ const EditOrDeleteList = ({route, navigation}:any) => {
         setIsLoading(false);
     }
 
+    const AddNewTask = () => {
+
+        const db = SQLite.openDatabaseSync('AllCheckLists.db');
+
+        const count = chosenChecklist.length;
+
+        db.execSync('INSERT INTO ' + tableName + ' (TASK, SEQUENCE) VALUES (\' \', ' + count +')');
+
+        loadData();
+
+        /*
+        const newTask: CheckList = new CheckList;
+
+        newTask.ID = undefined;
+        newTask.SEQUENCE = 0;
+        newTask.TASK = '';
+
+
+
+        setChecklist(oldArray => [...oldArray, newTask]);
+        */
+    }
+
     useEffect(() => {
         if (isFocused) {
             loadData();
@@ -112,14 +135,25 @@ const EditOrDeleteList = ({route, navigation}:any) => {
             <View>
                 <GlobalHeader text={"Edit list: " + JSON.stringify(Table)} />
                 
-                {chosenChecklist.map((CheckList) =>(
-                    <View key={CheckList.ID} style={styles.AddedTasks}>
+                {chosenChecklist.map((CheckList, index) =>(
+                    <View key={index} style={styles.AddedTasks}>
                         <TextInput 
                             style={styles.Text} 
                             editable
                             value={CheckList.TASK}
                             onChangeText={text => UpdateState(text, CheckList.ID)}/>
-                        <Text>{CheckList.SEQUENCE}</Text>
+                        <Pressable style={styles.DeleteButton}>
+                            <Ionicons 
+                                name="arrow-down-outline"
+                                size={20}
+                                color="#336DDD"/>
+                        </Pressable>
+                        <Pressable>
+                            <Ionicons 
+                                name="arrow-up-outline"
+                                size={20}
+                                color="#336DDD"/>
+                        </Pressable>
                         <Pressable style={styles.DeleteButton} onPress={() => DeleteRow(CheckList.ID)}>
                             <Ionicons 
                                 name="close-circle"
@@ -129,6 +163,11 @@ const EditOrDeleteList = ({route, navigation}:any) => {
                         </Pressable>
                     </View>
                 ))}
+                <View>
+                    <Button 
+                        title="Add new task"
+                        onPress={() => {AddNewTask()}}/>
+                </View>
                 <View style={styles.ButtonRow}>
                     <Button 
                         title="Save"
@@ -159,6 +198,7 @@ const styles = StyleSheet.create ({
         marginRight: '5%',
         marginTop: 10,
         textAlign: 'center',
+        alignItems: 'center',
     },
     Text: {
         color: '#336DDD',
@@ -166,10 +206,10 @@ const styles = StyleSheet.create ({
         marginBottom: 8,
         marginTop: 8,
         marginLeft: 15, 
-        width: '82%',
+        width: '75%',
     },
     DeleteButton: {
-        marginTop: 5, 
+        //marginTop: 5, 
     },
     ButtonRow: {
         flexDirection: 'row',
