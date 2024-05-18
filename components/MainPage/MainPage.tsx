@@ -6,12 +6,14 @@ import * as SQLite from 'expo-sqlite';
 import { useIsFocused } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import Activate from "../ActivateChecklist/ActivateList";
+import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 
 class TableNameClass {
     public name: string = '';
 }
 
 const Stack = createNativeStackNavigator();
+const materialTab = createMaterialTopTabNavigator();
 
 //Stacknavigator for the checklist
 function MyStack() {
