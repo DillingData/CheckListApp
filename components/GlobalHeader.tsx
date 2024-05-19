@@ -20,8 +20,8 @@ const headerStyling = StyleSheet.create({
         height: 120,
         width: '100%',
         backgroundColor: '#336DDD',
-        borderBottomLeftRadius: 20,
-        borderBottomRightRadius: 20,
+        //borderBottomLeftRadius: 20,
+        //borderBottomRightRadius: 20,
     }, 
     HeaderText: {
         fontSize: 22,

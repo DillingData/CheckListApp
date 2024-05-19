@@ -13,17 +13,19 @@ class TableNameClass {
 }
 
 const Stack = createNativeStackNavigator();
-const materialTab = createMaterialTopTabNavigator();
+
 
 //Stacknavigator for the checklist
 function MyStack() {
     return (
         <Stack.Navigator>
+            
             <Stack.Screen 
-                name="Main" 
+                name="MainPage" 
                 component={MainPage}
                 options={{header: () => null}}
             />
+            
             <Stack.Screen 
                 name="Edit" 
                 component={Activate}

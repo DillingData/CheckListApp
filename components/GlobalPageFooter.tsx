@@ -4,12 +4,12 @@ import NewCheckList from "./NewCheckList/NewCheckList";
 import EditCheckList from "./ManageChecklist/EditCheckList";
 import MainPage from "./MainPage/MainPage";
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import MyTab from "./MainPageTopHeader";
 
 const Tab = createBottomTabNavigator(); 
 
 //The menu bar in the bottom of the page
 const FooterMenu = () => {
-
     return (
         <Tab.Navigator
             screenOptions={({ route }) => ({
@@ -35,7 +35,8 @@ const FooterMenu = () => {
             >
             <Tab.Screen 
                 name="Home"
-                component={MainPage}
+                component={MyTab}
+                //component={MainPage}
                  />
             <Tab.Screen 
                 name="New List" 
