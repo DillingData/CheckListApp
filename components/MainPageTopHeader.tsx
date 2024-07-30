@@ -9,10 +9,7 @@ const MaterialTab = createMaterialTopTabNavigator();
 // TopNavigator for the checklist
 function MyTab() {
     return (
-        <View>
-            <View>
-
-            </View>
+        <SafeAreaView style={{ flex:1 }}>
             <MaterialTab.Navigator
                 screenOptions={{
                     tabBarStyle: { backgroundColor: '#336DDD' }, // Set your desired background color here
@@ -23,7 +20,7 @@ function MyTab() {
                     component={MainPage} />
                 <MaterialTab.Screen name="Start Checklist" component={NewCheckList} />
             </MaterialTab.Navigator>
-        </View>
+        </SafeAreaView>
 
     );
 }

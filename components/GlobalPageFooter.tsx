@@ -35,8 +35,8 @@ const FooterMenu = () => {
             >
             <Tab.Screen 
                 name="Home"
-                component={MyTab}
-                //component={MainPage}
+                //component={MyTab}
+                component={MainPage}
                  />
             <Tab.Screen 
                 name="New List" 
