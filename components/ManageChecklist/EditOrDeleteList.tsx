@@ -49,7 +49,6 @@ const EditOrDeleteList = ({route, navigation}:any) => {
                 {text: 'Cancel', style: 'cancel'},
                 {text: 'Ok', onPress: () => DeleteConfirmed()},
             ],
-
         );
     }
 
