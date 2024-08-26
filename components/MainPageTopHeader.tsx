@@ -12,8 +12,8 @@ function MyTab() {
         <SafeAreaView style={{ flex:1 }}>
             <MaterialTab.Navigator
                 screenOptions={{
-                    tabBarStyle: { backgroundColor: '#336DDD' }, // Set your desired background color here
-                    tabBarLabelStyle: { color: 'white' }, // Set the text color to white
+                    tabBarStyle: { backgroundColor: '#336DDD' },
+                    tabBarLabelStyle: { color: 'white' },
                 }}>
                 <MaterialTab.Screen 
                     name="Active CheckLists" 
