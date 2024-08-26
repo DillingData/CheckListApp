@@ -122,7 +122,6 @@ const NewCheckList = () => {
         */
 
         console.log(tables);
-        
     }
 
     return(
