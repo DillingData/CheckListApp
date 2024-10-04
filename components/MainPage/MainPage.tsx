@@ -56,6 +56,10 @@ const MainPage = ({navigation}:any) => {
         //Loads the activated checklists
         const tempArrayActive:TableNameClass[] = dbActive.getAllSync('SELECT name FROM sqlite_master WHERE type=\'' + type + '\' AND name <> \'sqlite_sequence\'') as TableNameClass[];
 
+        // ---- For manually removing checklists! --NOT TO BE DELETED!!-- ----
+        //dbActive.execSync('DROP TABLE Forårs_klargøring_af_båd');
+        //dbAll.execSync('DROP TABLE Forårs_klargøring_af_båd');
+
         //Replaces underscore character with a space
         for (let counter:number = 0; counter < tempArrayActive.length; counter++) {
             tempArrayActive[counter].name = tempArrayActive[counter].name?.replaceAll('_', ' ');
